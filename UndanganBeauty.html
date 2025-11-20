@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cover Undangan Beauty Kolaka</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Poppins", system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at top left, #ffd8ee 0%, #ffcaea 35%, #ffb4df 60%, #ffe9f6 100%);
+            overflow: hidden;
+            position: relative;
+            padding: 16px;
+        }
+
+        /* Dekorasi Glow */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(55px);
+            opacity: 0.75;
+        }
+        .blob-1 { width: 260px; height: 260px; background: linear-gradient(135deg,#ff7dc2,#ff9ad0); top:-60px; left:-40px; }
+        .blob-2 { width: 220px; height: 220px; background: linear-gradient(135deg,#ffbfff,#ff94d4); bottom:-40px; right:-40px; }
+
+        /* CARD */
+        .cover-card {
+            width: 100%;
+            max-width: 520px;
+            padding: 34px 26px;
+            background: rgba(255, 255, 255, 0.22);
+            border-radius: 26px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(22px);
+            box-shadow: 0 28px 65px rgba(255,120,180,0.20);
+            animation: fadeUp .9s ease-out forwards;
+            z-index: 2;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .logos {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .logos img {
+            height: 42px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+            transition: .3s;
+        }
+        .logos img:hover { transform: scale(1.07); }
+
+        .title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ff1f8f;
+            margin-bottom: 6px;
+            text-shadow: 0 0 6px rgba(255,68,155,0.3), 0 0 18px rgba(255,110,175,0.25);
+        }
+
+        /* TEKS HITAM */
+        .subtitle {
+            font-size: 1rem;
+            color: #222 !important;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-shadow: 0 0 3px rgba(0,0,0,0.05);
+        }
+
+        .divider {
+            width: 75px;
+            height: 3px;
+            margin: 0 auto 24px;
+            border-radius: 999px;
+            background: linear-gradient(to right,#ff4aa0,#ffa3da);
+            box-shadow: 0 0 12px rgba(255,90,160,0.55);
+        }
+
+        .info {
+            font-size: 0.95rem;
+            color: #222 !important;
+            line-height: 1.55;
+            margin-bottom: 28px;
+            font-weight: 500;
+        }
+
+        /* BUTTON */
+        .btn-enter {
+            display: inline-block;
+            padding: 12px 28px;
+            background: linear-gradient(135deg,#ff4c9d,#ff78b9);
+            border-radius: 999px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 700;
+            border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: 0 8px 22px rgba(255,76,157,0.40), inset 0 0 12px rgba(255,220,245,0.35);
+            transition: .22s ease;
+        }
+        .btn-enter:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 34px rgba(255,76,157,0.55), inset 0 0 18px rgba(255,220,245,0.45);
+        }
+
+        /* COPYRIGHT — posisi di bawah, rapi & minimalis */
+        .copyright {
+            width: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #555;
+            margin-top: 16px;
+            z-index: 3;
+            opacity: 0.75;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .cover-card { padding: 24px 18px; }
+            .logos img { height: 34px; }
+            .title { font-size: 1.55rem; }
+            .subtitle { font-size: .9rem; }
+            .info { font-size: .86rem; }
+            .btn-enter { padding: 10px 22px; font-size: .9rem; }
+            .copyright { font-size: 0.72rem; margin-top: 12px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="cover-card">
+
+        <div class="logos">
+            <img src="Beauty Logo 1.png" alt="Beauty Logo">
+            <img src="ceria.png f.png" alt="Ceria Logo">
+            <img src="BEXMart Logo.png" alt="BEXmart Logo">
+        </div>
+
+        <div class="title">Grand Opening Beauty Kolaka</div>
+
+        <div class="subtitle">Undangan • 29 November 2025</div>
+
+        <div class="divider"></div>
+
+        <div class="info">
+            Kami mengundang Bapak/Ibu untuk hadir dalam peresmian  
+            <b>Beauty Kolaka</b> sebagai mitra & rekan bisnis utama kami.
+        </div>
+
+        <a href="undanganDigitalTest.html" class="btn-enter">Buka Undangan</a>
+    </div>
+
+    <!-- COPYRIGHT FIXED & ELEGAN -->
+    <div class="copyright">
+        © 2025 Beauty Kendari — Marketing Communication. All rights reserved.
+    </div>
+
+</body>
+</html>
