@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cover Undangan Beauty Kolaka</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Poppins", system-ui, sans-serif;
+            background: #ffd4ef;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;                     /* DIHILANGKAN SUPAYA TIDAK ADA SPACE */
+        }
+
+        .cover-card {
+            background: #ffffffdd;
+            backdrop-filter: blur(12px);
+            border-radius: 26px;
+            padding: 35px 26px;
+            width: 92%;                     /* MEMPERBESAR CARD DI MOBILE */
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid rgba(255, 150, 190, 0.25);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.06);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* LOGO */
+        .logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+            flex-wrap: nowrap;
+        }
+
+        .logos img {
+            height: 44px;
+            object-fit: contain;
+            opacity: 0.94;
+        }
+
+        /* TITLE */
+        .title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #d21f7c;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 0.92rem;
+            color: #777;
+            margin-bottom: 24px;
+        }
+
+        /* BUTTON */
+        .btn-enter {
+            padding: 12px 28px;
+            background: #ff4c9d;
+            color: #fff;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: 0.25s ease;
+            display: inline-block;
+        }
+
+        .btn-enter:hover {
+            background: #e23788;
+            transform: translateY(-2px);
+        }
+
+        /* RESPONSIVE MOBILE */
+        @media(max-width: 480px){
+            body {
+                padding: 0;
+                background: #fde1ec;
+            }
+
+            .cover-card {
+                width: 95%;                 /* LEBIH BESAR */
+                border-radius: 22px;
+                padding: 28px 20px;         /* DIPERKECIL */
+                margin: 0 auto;
+            }
+
+            .logos img {
+                height: 36px;
+            }
+
+            .title {
+                font-size: 1.45rem;
+            }
+
+            .subtitle {
+                font-size: 0.85rem;
+                margin-bottom: 18px;
+            }
+
+            .btn-enter {
+                font-size: 0.9rem;
+                padding: 11px 24px;
+            }
+        }
+
+        /* VERY SMALL PHONE */
+        @media(max-width: 360px){
+            .logos img { height: 32px; }
+            .title { font-size: 1.35rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="cover-card">
+
+    <div class="logos">
+        <img src="Beauty Logo 1.png" alt="Beauty Logo">
+        <img src="ceria.png f.png" alt="Ceria Logo">
+        <img src="BEXMart Logo.png" alt="BEXmart Logo">
+    </div>
+
+    <div class="title">Grand Opening Beauty Kolaka</div>
+    <div class="subtitle">Undangan • 29 November 2025</div>
+
+    <a href="undangan.html" class="btn-enter">Buka Undangan</a>
+
+</div>
+
+</body>
+</html>

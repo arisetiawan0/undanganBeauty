@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Undangan Grand Opening Beauty</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Poppins", system-ui, sans-serif;
+            background: linear-gradient(135deg, #ffe3f0, #ffd4ef);
+            padding: 25px 15px;
+            color: #444;
+            overflow-x: hidden;
+        }
+
+        /* ANIMASI CARD */
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(25px) scale(0.97); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ANIMASI TOMBOL */
+        @keyframes fadeBounce {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffffee;
+            border-radius: 26px;
+            padding: 35px 28px;
+            box-shadow: 0 25px 55px rgba(0,0,0,0.10);
+            text-align: center;
+            border: 1px solid rgba(255, 182, 211, 0.55);
+            backdrop-filter: blur(8px);
+            animation: fadeUp 0.9s ease-out forwards;
+        }
+
+        .tagline {
+            font-size: 0.85rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #ff3f9d;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .title {
+            font-size: 2rem;
+            color: #d8177b;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .divider {
+            width: 100px;
+            height: 3px;
+            border-radius: 3px;
+            margin: 15px auto 25px;
+            background: linear-gradient(to right, transparent, #ff4ba0, transparent);
+        }
+
+        .content {
+            font-size: 1rem;
+            line-height: 1.75;
+            text-align: justify;
+            margin-bottom: 30px;
+            color: #444;
+        }
+
+        /* INFO BOX */
+        .details-box {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .detail-item {
+            flex: 1 1 45%;
+            min-width: 220px;
+            background: #fff6fb;
+            padding: 15px 12px;
+            border-radius: 18px;
+            border: 1px solid #ffcce5;
+            text-align: center;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #b8487a;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+        }
+
+        .detail-value {
+            margin-top: 5px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #c2126c;
+        }
+
+        /* LOKASI */
+        .location-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #c2126c;
+            margin-bottom: 5px;
+        }
+
+        .location-text {
+            font-size: 1rem;
+            color: #444;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        /* BUTTONS */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            animation: fadeBounce 1.1s ease-out forwards;
+        }
+
+        .btn {
+            padding: 12px 26px;
+            border-radius: 999px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.25s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .btn-primary {
+            background: #ff4c9d;
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(255, 76, 157, 0.35);
+        }
+
+        .btn-primary:hover {
+            background: #e23788;
+            box-shadow: 0 14px 30px rgba(255, 76, 157, 0.45);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #ff4c9d;
+            border: 2px solid #ff4c9d;
+        }
+
+        .btn-outline:hover {
+            background: #ffe4f3;
+        }
+
+        /* FOOTER */
+        .footer-text {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .copyright {
+            margin-top: 15px;
+            font-size: 0.75rem;
+            color: #999;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 480px) {
+            .title { font-size: 1.6rem; }
+            .detail-item { min-width: 100%; }
+            .content { text-align: left; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <div class="tagline">Undangan</div>
+
+    <div class="title">Grand Opening Beauty Kolaka</div>
+
+    <div class="subtitle">Mari rayakan momen spesial pembukaan toko terbaru kami ✨</div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        Kami dari <b>Toko Beauty Kendari</b> dengan bangga dan sukacita mengundang Bapak/Ibu dalam acara
+        <b>Grand Opening Toko Beauty Kolaka</b>.
+        Kehadiran Bapak/Ibu sebagai mitra dan supplier utama kami merupakan dukungan yang sangat berharga
+        dalam perjalanan bisnis dan pengembangan layanan kami.
+        Acara ini juga menjadi momen yang tepat untuk mempererat silaturahmi dan kerjasama yang telah terjalin dengan baik.
+    </div>
+
+    <div class="details-box">
+        <div class="detail-item">
+            <div class="detail-label">Tanggal</div>
+            <div class="detail-value">Sabtu, 29 November 2025</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Waktu</div>
+            <div class="detail-value">Pukul 10.00 WITA – selesai</div>
+        </div>
+    </div>
+
+    <div class="location-title">Lokasi Acara</div>
+    <div class="location-text">
+        Beauty Kolaka<br>
+        Jl. Pramuka, Lamokato, Kolaka (Samping BRI Unit Kolaka)
+    </div>
+
+    <div class="button-group">
+        <a href="https://maps.app.goo.gl/HwxzRwGyytsESZwn8" target="_blank" class="btn btn-outline">
+            Lihat Lokasi
+        </a>
+
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdKIQ5CiP2kiqX_IidYbEaR8G4pChiq5jG0PH5vHS-WWU4urQ/viewform"
+           target="_blank"
+           class="btn btn-primary">
+           Konfirmasi Kehadiran
+        </a>
+    </div>
+
+    <div class="footer-text">
+        Sampai jumpa di Beauty, kami tunggu kehadirannya 💗
+    </div>
+
+    <div class="copyright">
+        © 2025 Beauty Kendari — Marketing Communication. All rights reserved.
+    </div>
+
+</div>
+
+</body>
+</html>
