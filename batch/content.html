@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Undangan Grand Opening Beauty Raha</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="favicon.jpg">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Poppins", system-ui, sans-serif;
+            background: linear-gradient(135deg, #ffe3f0, #ffd4ef);
+            padding: 28px 15px;
+            color: #444;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .bg-glow {
+            position: fixed;
+            inset: auto;
+            border-radius: 50%;
+            filter: blur(58px);
+            opacity: 0.55;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow.one {
+            width: 280px;
+            height: 280px;
+            background: rgba(255, 142, 197, 0.45);
+            top: -60px;
+            left: -50px;
+            animation: driftOne 10s ease-in-out infinite;
+        }
+
+        .bg-glow.two {
+            width: 260px;
+            height: 260px;
+            background: rgba(255, 217, 236, 0.9);
+            right: -80px;
+            bottom: 0;
+            animation: driftTwo 12s ease-in-out infinite;
+        }
+
+        .card {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: auto;
+            background: #ffffffef;
+            border-radius: 28px;
+            padding: 40px 34px 36px;
+            box-shadow: 0 28px 60px rgba(255, 131, 184, 0.16);
+            text-align: center;
+            border: 1px solid rgba(255, 187, 216, 0.65);
+            backdrop-filter: blur(8px);
+            animation: cardIn .8s ease-out forwards;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+            animation: fadeUp .7s ease-out forwards;
+        }
+
+        .delay-1 { animation-delay: .08s; }
+        .delay-2 { animation-delay: .16s; }
+        .delay-3 { animation-delay: .24s; }
+        .delay-4 { animation-delay: .32s; }
+        .delay-5 { animation-delay: .40s; }
+        .delay-6 { animation-delay: .48s; }
+        .delay-7 { animation-delay: .56s; }
+
+        .tagline {
+            font-size: 0.85rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #ff3f9d;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            font-size: 2rem;
+            color: #d8177b;
+            font-weight: 800;
+            margin-bottom: 8px;
+            line-height: 1.15;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 18px;
+        }
+
+        .divider {
+            width: 100px;
+            height: 3px;
+            border-radius: 999px;
+            margin: 0 auto 28px;
+            background: linear-gradient(to right, transparent, #ff4ba0, transparent);
+            animation: pulseLine 2.8s ease-in-out infinite;
+        }
+
+        .content {
+            font-size: 1rem;
+            line-height: 1.72;
+            text-align: justify;
+            margin-bottom: 28px;
+            color: #444;
+        }
+
+        .details-box {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .detail-item {
+            flex: 1 1 45%;
+            min-width: 220px;
+            background: #fff8fc;
+            padding: 18px 16px;
+            border-radius: 20px;
+            border: 1px solid #ffcce5;
+            text-align: center;
+            transition: transform .22s ease, box-shadow .22s ease;
+        }
+
+        .detail-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 30px rgba(255, 120, 176, 0.14);
+        }
+
+        .detail-label {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            color: #b8487a;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            margin-bottom: 8px;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #d12379;
+            line-height: 1.35;
+        }
+
+        .location-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #d12379;
+            margin-bottom: 6px;
+        }
+
+        .location-text {
+            font-size: 1rem;
+            color: #444;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .countdown-inline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 26px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: #fff5fb;
+            border: 1px solid #ffd6ea;
+            color: #9d5476;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .countdown-inline strong {
+            color: #d12379;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            position: relative;
+            overflow: hidden;
+            padding: 14px 28px;
+            border-radius: 999px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .btn-outline {
+            color: #ff4c9d;
+            border: 2px solid #ff4c9d;
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: #ffe9f4;
+        }
+
+        .btn-primary {
+            border: 0;
+            color: #fff;
+            background: linear-gradient(135deg, #ff4c9d, #ff67ae);
+            box-shadow: 0 12px 26px rgba(255, 76, 157, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 16px 32px rgba(255, 76, 157, 0.38);
+        }
+
+        .btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.45), transparent);
+            transform: translateX(-130%);
+            animation: shimmer 3.2s ease-in-out infinite;
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.5);
+            pointer-events: none;
+            animation: ripple .7s ease-out forwards;
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            transform: translate(-50%, 18px);
+            opacity: 0;
+            background: rgba(73, 24, 44, 0.94);
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            box-shadow: 0 14px 28px rgba(0,0,0,0.18);
+            transition: opacity .25s ease, transform .25s ease;
+            z-index: 5;
+            max-width: calc(100vw - 32px);
+            text-align: center;
+        }
+
+        .toast.visible {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        .rsvp-panel {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: max-height .35s ease, opacity .3s ease, transform .3s ease, margin-top .3s ease;
+            margin-top: 0;
+            text-align: left;
+        }
+
+        .rsvp-panel.is-open {
+            max-height: 1200px;
+            opacity: 1;
+            transform: translateY(0);
+            margin-top: 6px;
+        }
+
+        .rsvp-box {
+            background: #fff8fc;
+            border: 1px solid #ffd6ea;
+            border-radius: 22px;
+            padding: 22px 18px;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5);
+        }
+
+        .rsvp-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #d12379;
+            text-align: center;
+        }
+
+        .rsvp-copy {
+            margin-top: 8px;
+            margin-bottom: 18px;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: #7d5870;
+            text-align: center;
+        }
+
+        .field {
+            margin-bottom: 14px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #b8487a;
+        }
+
+        .field input {
+            width: 100%;
+            min-height: 48px;
+            border: 1px solid #ffcce5;
+            border-radius: 16px;
+            background: #fff;
+            padding: 12px 14px;
+            font-size: 16px;
+            color: #444;
+        }
+
+        .field input:focus {
+            outline: 2px solid rgba(255, 76, 157, 0.18);
+            border-color: #ff7ab8;
+        }
+
+        .helper-text {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.82rem;
+            color: #9d5476;
+        }
+
+        .guest-fields {
+            display: grid;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .guest-item {
+            display: grid;
+            gap: 6px;
+        }
+
+        .guest-item label {
+            margin-bottom: 0;
+            font-size: 0.84rem;
+        }
+
+        .status-message {
+            min-height: 22px;
+            margin-top: 12px;
+            font-size: 0.88rem;
+            text-align: center;
+        }
+
+        .status-message.is-success {
+            color: #b11f67;
+        }
+
+        .status-message.is-error {
+            color: #b33a54;
+        }
+
+        .footer-text {
+            margin-top: 34px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .copyright {
+            margin-top: 16px;
+            font-size: 0.75rem;
+            color: #999;
+            text-align: center;
+            opacity: 0.85;
+        }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(24px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseLine {
+            0%, 100% { transform: scaleX(1); opacity: .9; }
+            50% { transform: scaleX(1.08); opacity: 1; }
+        }
+
+        @keyframes shimmer {
+            0%, 22% { transform: translateX(-130%); }
+            58%, 100% { transform: translateX(140%); }
+        }
+
+        @keyframes ripple {
+            from { width: 0; height: 0; opacity: .8; }
+            to { width: 220px; height: 220px; opacity: 0; }
+        }
+
+        @keyframes driftOne {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(24px, 24px) scale(1.06); }
+        }
+
+        @keyframes driftTwo {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-20px, -18px) scale(1.04); }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 32px 20px 30px;
+                border-radius: 24px;
+            }
+
+            .title {
+                font-size: 1.7rem;
+            }
+
+            .content {
+                text-align: left;
+            }
+
+            .detail-item {
+                min-width: 100%;
+            }
+
+        .button-group {
+                gap: 12px;
+            }
+
+            .rsvp-box {
+                padding: 18px 14px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="bg-glow one"></div>
+<div class="bg-glow two"></div>
+
+<div class="card">
+    <div class="tagline reveal delay-1">Undangan</div>
+
+    <div class="title reveal delay-2">Grand Opening Beauty Raha</div>
+
+    <div class="subtitle reveal delay-3">Mari rayakan momen spesial pembukaan ruang cantik baru kami ✨</div>
+
+    <div class="divider reveal delay-3"></div>
+
+    <div class="content reveal delay-4">
+        Kami dengan bangga mengundang Bapak/Ibu untuk hadir dalam acara
+        <b>Grand Opening Beauty Raha</b>.
+        Kehadiran Bapak/Ibu sebagai mitra, sahabat brand, dan tamu undangan merupakan dukungan yang sangat berarti
+        bagi langkah awal kami dalam menghadirkan pengalaman kecantikan yang hangat dan elegan di Raha.
+    </div>
+
+    <div class="details-box reveal delay-5">
+        <div class="detail-item">
+            <div class="detail-label">Tanggal</div>
+            <div class="detail-value">Jumat, 10 April 2026</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Waktu</div>
+            <div class="detail-value">Pukul 09.30 WITA - selesai</div>
+        </div>
+    </div>
+
+    <div class="location-title reveal delay-5">Lokasi Acara</div>
+    <div class="location-text reveal delay-6">
+        Beauty Raha<br>
+        Jl. Sukowati, Raha I, Kec. Katobu, Kabupaten Muna, Sulawesi Tenggara 93611
+    </div>
+
+    <div class="countdown-inline reveal delay-6">
+        Menuju acara: <strong id="countdownText">menghitung waktu...</strong>
+    </div>
+
+    <div class="button-group reveal delay-7">
+        <a href="https://maps.app.goo.gl/w8fharKwpTqkxunV7" target="_blank" rel="noreferrer" class="btn btn-outline ripple-target">Lihat Lokasi</a>
+        <button type="button" class="btn btn-primary ripple-target" id="rsvpButton">Konfirmasi Kehadiran</button>
+    </div>
+
+    <div class="rsvp-panel" id="rsvpPanel">
+        <div class="rsvp-box">
+            <div class="rsvp-title">Form Konfirmasi Kehadiran</div>
+            <div class="rsvp-copy">
+                Isi nama brand atau instansi, jumlah tamu yang hadir, lalu lengkapi nama masing-masing tamu.
+            </div>
+
+            <form id="rsvpForm" novalidate>
+                <div class="field">
+                    <label for="brandName">Dari Brand Apa?</label>
+                    <input id="brandName" name="brandName" type="text" minlength="2" placeholder="Contoh: PT Muna Cantik" required>
+                </div>
+
+                <div class="field">
+                    <label for="guestCount">Jumlah Tamu yang Hadir</label>
+                    <input id="guestCount" name="guestCount" type="number" min="1" max="10" value="1" required>
+                    <span class="helper-text" id="guestHelperText">Isi jumlah tamu, lalu nama tamu akan muncul otomatis.</span>
+                </div>
+
+                <div class="field">
+                    <label>Nama-nama yang Hadir</label>
+                    <div class="guest-fields" id="guestFields"></div>
+                </div>
+
+                <div class="button-group" style="margin-bottom: 0; margin-top: 16px;">
+                    <button type="submit" class="btn btn-primary ripple-target" id="submitRsvpButton">Kirim Konfirmasi</button>
+                </div>
+
+                <div class="status-message" id="formStatus" role="status" aria-live="polite"></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="footer-text reveal delay-7">
+        Sampai jumpa di Beauty Raha, kami tunggu kehadirannya 💗
+    </div>
+
+    <div class="copyright reveal delay-7">
+        &copy; 2026 Beauty Raha - Marketing Communication. All rights reserved.
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    const RSVP_STORAGE_KEY = "beauty-raha-rsvp-entries";
+    const RSVP_SUBMIT_FLAG = "beauty-raha-rsvp-submitted";
+
+    function updateCountdownText() {
+        const target = new Date("2026-04-10T09:30:00+08:00").getTime();
+        const diff = Math.max(target - Date.now(), 0);
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const node = document.getElementById("countdownText");
+        if (!node) return;
+        node.textContent = `${days} hari ${hours} jam ${minutes} menit lagi`;
+    }
+
+    updateCountdownText();
+    window.setInterval(updateCountdownText, 60000);
+
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add("visible");
+        clearTimeout(showToast.timer);
+        showToast.timer = setTimeout(() => {
+            toast.classList.remove("visible");
+        }, 2600);
+    }
+
+    function setFormStatus(message, type) {
+        const node = document.getElementById("formStatus");
+        if (!node) return;
+        node.className = `status-message${type ? ` is-${type}` : ""}`;
+        node.textContent = message;
+    }
+
+    function getStoredRsvps() {
+        try {
+            const raw = localStorage.getItem(RSVP_STORAGE_KEY);
+            return raw ? JSON.parse(raw) : [];
+        } catch {
+            return [];
+        }
+    }
+
+    function saveStoredRsvps(data) {
+        localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function renderGuestFields() {
+        const countInput = document.getElementById("guestCount");
+        const guestFields = document.getElementById("guestFields");
+        const helper = document.getElementById("guestHelperText");
+        if (!countInput || !guestFields || !helper) return;
+
+        const count = Math.max(1, Math.min(10, Number(countInput.value) || 1));
+        countInput.value = String(count);
+        guestFields.innerHTML = "";
+
+        for (let index = 1; index <= count; index += 1) {
+            const wrap = document.createElement("div");
+            wrap.className = "guest-item";
+
+            const label = document.createElement("label");
+            label.setAttribute("for", `guest-${index}`);
+            label.textContent = `Nama ${index}`;
+
+            const input = document.createElement("input");
+            input.id = `guest-${index}`;
+            input.name = `guest-${index}`;
+            input.type = "text";
+            input.placeholder = `Isi nama tamu ${index}`;
+            input.required = true;
+
+            wrap.append(label, input);
+            guestFields.appendChild(wrap);
+        }
+
+        helper.textContent = `${count} nama tamu wajib diisi.`;
+    }
+
+    const rsvpButton = document.getElementById("rsvpButton");
+    const rsvpPanel = document.getElementById("rsvpPanel");
+    const rsvpForm = document.getElementById("rsvpForm");
+    const submitRsvpButton = document.getElementById("submitRsvpButton");
+    const brandNameInput = document.getElementById("brandName");
+    const guestCountInput = document.getElementById("guestCount");
+
+    guestCountInput?.addEventListener("input", renderGuestFields);
+    renderGuestFields();
+
+    if (localStorage.getItem(RSVP_SUBMIT_FLAG) === "true") {
+        submitRsvpButton.disabled = true;
+        setFormStatus("Perangkat ini sudah pernah mengirim konfirmasi kehadiran.", "success");
+    }
+
+    rsvpButton?.addEventListener("click", () => {
+        rsvpPanel?.classList.add("is-open");
+        brandNameInput?.focus();
+    });
+
+    rsvpForm?.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        if (localStorage.getItem(RSVP_SUBMIT_FLAG) === "true") {
+            setFormStatus("Konfirmasi ganda diblokir untuk perangkat ini.", "error");
+            showToast("Perangkat ini sudah pernah submit RSVP.");
+            return;
+        }
+
+        const brandName = brandNameInput.value.trim();
+        const guestCount = Math.max(1, Number(guestCountInput.value) || 1);
+        const guestNames = Array.from(document.querySelectorAll("#guestFields input")).map((input) => input.value.trim());
+
+        if (brandName.length < 2) {
+            setFormStatus("Nama brand atau instansi minimal 2 karakter.", "error");
+            brandNameInput.focus();
+            return;
+        }
+
+        if (guestNames.length !== guestCount || guestNames.some((name) => name.length < 2)) {
+            setFormStatus("Semua nama tamu wajib diisi dengan benar.", "error");
+            const invalid = Array.from(document.querySelectorAll("#guestFields input")).find((input) => input.value.trim().length < 2);
+            invalid?.focus();
+            return;
+        }
+
+        const entries = getStoredRsvps();
+        entries.unshift({
+            brandName,
+            guestCount,
+            guestNames,
+            createdAt: new Date().toISOString()
+        });
+
+        saveStoredRsvps(entries);
+        localStorage.setItem(RSVP_SUBMIT_FLAG, "true");
+        submitRsvpButton.disabled = true;
+        setFormStatus(`Terima kasih, ${brandName}. Konfirmasi berhasil dikirim.`, "success");
+        showToast(`Terima kasih, ${brandName}. Konfirmasi berhasil dikirim.`);
+        rsvpForm.reset();
+        guestCountInput.value = "1";
+        renderGuestFields();
+    });
+
+    document.querySelectorAll(".ripple-target").forEach((button) => {
+        button.addEventListener("click", (event) => {
+            const rect = button.getBoundingClientRect();
+            const ripple = document.createElement("span");
+            ripple.className = "ripple";
+            ripple.style.left = `${event.clientX - rect.left}px`;
+            ripple.style.top = `${event.clientY - rect.top}px`;
+            button.appendChild(ripple);
+            window.setTimeout(() => ripple.remove(), 700);
+        });
+    });
+</script>
+
+</body>
+</html>

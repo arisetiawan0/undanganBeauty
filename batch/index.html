@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cover Undangan Beauty Raha</title>
+    <link rel="icon" type="image/jpeg" href="favicon.jpg">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Poppins", system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at top left, #ffd8ee 0%, #ffcaea 35%, #ffb4df 60%, #ffe9f6 100%);
+            overflow: hidden;
+            position: relative;
+            padding: 16px;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(55px);
+            opacity: 0.78;
+            transition: transform 0.35s ease;
+        }
+        .blob-1 {
+            width: 260px;
+            height: 260px;
+            background: linear-gradient(135deg, #ff7dc2, #ff9ad0);
+            top: -60px;
+            left: -40px;
+            animation: blobFloatOne 8s ease-in-out infinite;
+        }
+        .blob-2 {
+            width: 220px;
+            height: 220px;
+            background: linear-gradient(135deg, #ffbfff, #ff94d4);
+            bottom: -40px;
+            right: -40px;
+            animation: blobFloatTwo 9s ease-in-out infinite;
+        }
+
+        .petals {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .petal {
+            position: absolute;
+            top: -10%;
+            width: 14px;
+            height: 22px;
+            border-radius: 999px 999px 999px 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,152,203,0.86));
+            opacity: 0.68;
+            animation: fall linear infinite;
+        }
+        .petal:nth-child(1) { left: 8%; animation-duration: 9s; animation-delay: -1s; }
+        .petal:nth-child(2) { left: 22%; width: 10px; height: 18px; animation-duration: 11s; animation-delay: -5s; }
+        .petal:nth-child(3) { left: 42%; animation-duration: 8s; animation-delay: -2s; }
+        .petal:nth-child(4) { left: 61%; width: 11px; height: 19px; animation-duration: 10s; animation-delay: -6s; }
+        .petal:nth-child(5) { left: 78%; animation-duration: 12s; animation-delay: -3s; }
+        .petal:nth-child(6) { left: 90%; width: 10px; height: 17px; animation-duration: 9.5s; animation-delay: -7s; }
+
+        .cover-card {
+            width: 100%;
+            max-width: 520px;
+            padding: 34px 26px;
+            background: rgba(255, 255, 255, 0.22);
+            border-radius: 26px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(22px);
+            box-shadow: 0 28px 65px rgba(255,120,180,0.20);
+            animation: fadeUp .9s ease-out forwards;
+            z-index: 2;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        .fade-item {
+            opacity: 0;
+            transform: translateY(18px);
+            animation: fadeUp .85s ease-out forwards;
+        }
+        .fade-item.delay-1 { animation-delay: .1s; }
+        .fade-item.delay-2 { animation-delay: .2s; }
+        .fade-item.delay-3 { animation-delay: .3s; }
+        .fade-item.delay-4 { animation-delay: .4s; }
+        .fade-item.delay-5 { animation-delay: .5s; }
+
+        .logos {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .logos img {
+            height: 42px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+            transition: transform .3s ease, filter .3s ease;
+        }
+        .logos img:hover {
+            transform: translateY(-3px) scale(1.06);
+            filter: drop-shadow(0 8px 16px rgba(255, 79, 159, 0.32));
+        }
+
+        .title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ff1f8f;
+            margin-bottom: 6px;
+            text-shadow: 0 0 6px rgba(255,68,155,0.3), 0 0 18px rgba(255,110,175,0.25);
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #222 !important;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-shadow: 0 0 3px rgba(0,0,0,0.05);
+        }
+
+        .micro-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.54);
+            color: #8f3660;
+            font-size: 0.82rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55);
+        }
+
+        .divider {
+            width: 75px;
+            height: 3px;
+            margin: 0 auto 24px;
+            border-radius: 999px;
+            background: linear-gradient(to right, #ff4aa0, #ffa3da);
+            box-shadow: 0 0 12px rgba(255,90,160,0.55);
+            animation: pulseGlow 2.8s ease-in-out infinite;
+        }
+
+        .info {
+            font-size: 0.95rem;
+            color: #222 !important;
+            line-height: 1.55;
+            margin-bottom: 28px;
+            font-weight: 500;
+        }
+
+        .btn-enter {
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #ff4c9d, #ff78b9);
+            border-radius: 999px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 700;
+            border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: 0 8px 22px rgba(255,76,157,0.40), inset 0 0 12px rgba(255,220,245,0.35);
+            transition: transform .22s ease, box-shadow .22s ease;
+        }
+        .btn-enter:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 34px rgba(255,76,157,0.55), inset 0 0 18px rgba(255,220,245,0.45);
+        }
+        .btn-enter::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            transform: translateX(-120%);
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.55), transparent);
+            animation: shimmer 3.2s ease-in-out infinite;
+        }
+
+        .copyright {
+            width: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #555;
+            margin-top: 16px;
+            z-index: 3;
+            opacity: 0.75;
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.55);
+            pointer-events: none;
+            animation: ripple .7s ease-out forwards;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 12px rgba(255,90,160,0.40); transform: scaleX(1); }
+            50% { box-shadow: 0 0 20px rgba(255,90,160,0.68); transform: scaleX(1.08); }
+        }
+
+        @keyframes shimmer {
+            0%, 25% { transform: translateX(-120%); }
+            55%, 100% { transform: translateX(140%); }
+        }
+
+        @keyframes ripple {
+            from { width: 0; height: 0; opacity: .75; }
+            to { width: 260px; height: 260px; opacity: 0; }
+        }
+
+        @keyframes blobFloatOne {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+            50% { transform: translate3d(26px, 20px, 0) scale(1.08); }
+        }
+
+        @keyframes blobFloatTwo {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+            50% { transform: translate3d(-24px, -18px, 0) scale(1.07); }
+        }
+
+        @keyframes fall {
+            0% { transform: translate3d(0, -12vh, 0) rotate(0deg); }
+            100% { transform: translate3d(40px, 115vh, 0) rotate(280deg); }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .cover-card { padding: 24px 18px; }
+            .logos img { height: 34px; }
+            .title { font-size: 1.55rem; }
+            .subtitle { font-size: .9rem; }
+            .info { font-size: .86rem; }
+            .btn-enter { padding: 10px 22px; font-size: .9rem; }
+            .copyright { font-size: 0.72rem; margin-top: 12px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+            .cover-card { transform: none !important; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="petals" aria-hidden="true">
+        <span class="petal"></span>
+        <span class="petal"></span>
+        <span class="petal"></span>
+        <span class="petal"></span>
+        <span class="petal"></span>
+        <span class="petal"></span>
+    </div>
+
+    <div class="cover-card" id="coverCard">
+
+        <div class="logos fade-item delay-1">
+            <img src="Beauty Logo 1.png" alt="Beauty Logo">
+            <img src="ceria.png f.png" alt="Ceria Logo">
+            <img src="BEXMart Logo.png" alt="BEXmart Logo">
+        </div>
+
+        <div class="micro-badge fade-item delay-2">Grand Opening - 10 April 2026 - 09.30 WITA</div>
+
+        <div class="title fade-item delay-3">Grand Opening Beauty Raha</div>
+
+        <div class="subtitle fade-item delay-3">Undangan resmi - Jl. Sukowati, Raha I, Kec. Katobu</div>
+
+        <div class="divider fade-item delay-4"></div>
+
+        <div class="info fade-item delay-4">
+            Kami mengundang Bapak/Ibu untuk hadir dalam peresmian
+            <b>Beauty Raha</b> dan merayakan momen pembukaan bersama para mitra,
+            rekan bisnis, dan sahabat brand kami.
+        </div>
+
+        <a href="content.html" class="btn-enter fade-item delay-5 ripple-target">Buka Undangan</a>
+    </div>
+
+    <div class="copyright">
+        &copy; 2026 Beauty Raha - Marketing Communication. All rights reserved.
+    </div>
+
+    <script>
+        const card = document.getElementById("coverCard");
+        const blobs = Array.from(document.querySelectorAll(".blob"));
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        if (card && !prefersReducedMotion) {
+            document.addEventListener("mousemove", (event) => {
+                const rect = card.getBoundingClientRect();
+                const px = (event.clientX - rect.left) / rect.width;
+                const py = (event.clientY - rect.top) / rect.height;
+                const rotateY = (px - 0.5) * 10;
+                const rotateX = (0.5 - py) * 10;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+                blobs.forEach((blob, index) => {
+                    const depth = (index + 1) * 8;
+                    const moveX = (event.clientX / window.innerWidth - 0.5) * depth;
+                    const moveY = (event.clientY / window.innerHeight - 0.5) * depth;
+                    blob.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                });
+            });
+
+            card.addEventListener("mouseleave", () => {
+                card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
+                blobs.forEach((blob) => {
+                    blob.style.transform = "translate(0, 0)";
+                });
+            });
+        }
+
+        document.querySelectorAll(".ripple-target").forEach((button) => {
+            button.addEventListener("click", (event) => {
+                const rect = button.getBoundingClientRect();
+                const ripple = document.createElement("span");
+                ripple.className = "ripple";
+                ripple.style.left = `${event.clientX - rect.left}px`;
+                ripple.style.top = `${event.clientY - rect.top}px`;
+                button.appendChild(ripple);
+                window.setTimeout(() => ripple.remove(), 700);
+            });
+        });
+    </script>
+
+</body>
+</html>
