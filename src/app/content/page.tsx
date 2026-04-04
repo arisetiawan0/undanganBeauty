@@ -231,7 +231,7 @@ export default function ContentPage() {
         </h1>
 
         <p className={`${styles.subtitle} ${styles.reveal} ${styles.delay3}`}>
-          Mari rayakan momen spesial pembukaan ruang cantik baru kami 
+          Mari rayakan momen spesial pembukaan outlet baru kami 
         </p>
 
         <div className={`${styles.divider} ${styles.reveal} ${styles.delay3}`} />
