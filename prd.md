@@ -243,7 +243,7 @@ Data masuk Google Sheets → Admin bisa lihat di halaman Guest List
 
 **Logika:**
 - Password statis disimpan di konfigurasi (bukan database)
-- Setelah login, session disimpan di `sessionStorage` (habis saat tab ditutup)
+- Setelah login, session disimpan di `httpOnly cookie` agar akses admin tetap sederhana namun lebih aman
 
 ---
 
@@ -291,14 +291,14 @@ Data masuk Google Sheets → Admin bisa lihat di halaman Guest List
 
 | Layer | Teknologi |
 |---|---|
-| **Markup** | HTML5 Semantik |
-| **Styling** | CSS3 (Custom Properties, Flexbox, Grid, Keyframes) |
-| **Interaktivitas** | Vanilla JavaScript (ES6+) |
-| **Font** | Google Fonts (Cormorant Garamond + Jost) |
+| **Frontend** | Next.js App Router + React |
+| **Styling** | CSS Modules + global CSS |
+| **Interaktivitas** | React client components + fetch API |
+| **Font** | Google Fonts via `next/font` |
 | **Form Backend** | TiDB dan Drizzle ORM |
 | **Database** | TiDB dan Drizzle ORM |
-| **Admin Auth** | Password statis via `sessionStorage` |
-| **Hosting** | GitHub Pages / Vercel / Netlify (gratis) |
+| **Admin Auth** | Password statis via `httpOnly cookie` |
+| **Hosting** | Vercel |
 
 ### 5.2 Arsitektur Data
 
@@ -548,10 +548,10 @@ Data berikut sudah dikonfirmasi dan siap diimplementasikan langsung ke dalam kod
 - **Mobile-first adalah prioritas utama** — mayoritas tamu akan membuka undangan dari HP via WhatsApp atau Instagram
 - Semua CSS ditulis dengan pendekatan `min-width` media query — mobile sebagai default
 - Desain harus bisa di-update kontennya dengan mudah (tanggal, waktu, dll) — semua konfigurasi dikumpulkan di bagian atas file JS
-- Website terdiri dari 2 file HTML: `index.html` (publik) dan `admin.html` (privat)
-- Mudah di-deploy ke GitHub Pages, Netlify, atau Vercel secara gratis
-- Link `index.html` bisa langsung dibagikan via WhatsApp, Instagram Story, atau QR Code
-- Link `admin.html` hanya dibagikan ke tim internal Beauty Raha
+- Website berjalan sebagai aplikasi Next.js dengan route publik dan admin terpisah
+- Link publik utama menggunakan route `/` atau `/content` sesuai kebutuhan distribusi
+- Link `/admin` hanya dibagikan ke tim internal Beauty Raha
+- Referensi desain HTML lama disimpan di `docs/archive/batch/` sebagai arsip
 - Google Sheets sebagai database memudahkan tim melihat & mengolah data tamu langsung tanpa tools tambahan
 - Pastikan meta viewport tag terpasang: `<meta name="viewport" content="width=device-width, initial-scale=1.0">`
 

@@ -71,14 +71,14 @@
 
         .cover-card {
             width: 100%;
-            max-width: 520px;
-            padding: 34px 26px;
-            background: rgba(255, 255, 255, 0.22);
-            border-radius: 26px;
+            max-width: 540px;
+            padding: 42px 32px;
+            background: rgba(255, 255, 255, 0.28);
+            border-radius: 28px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(22px);
-            box-shadow: 0 28px 65px rgba(255,120,180,0.20);
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(28px);
+            box-shadow: 0 32px 70px rgba(255,120,180,0.22), 0 0 0 1px rgba(255,255,255,0.4) inset;
             animation: fadeUp .9s ease-out forwards;
             z-index: 2;
             transform-style: preserve-3d;
@@ -99,66 +99,67 @@
         .logos {
             display: flex;
             justify-content: center;
-            gap: 18px;
-            margin-bottom: 20px;
+            gap: 20px;
+            margin-bottom: 28px;
             flex-wrap: wrap;
         }
         .logos img {
-            height: 42px;
+            height: 120px;
+            width: auto;
             object-fit: contain;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
-            transition: transform .3s ease, filter .3s ease;
+            filter: drop-shadow(0 3px 8px rgba(255,79,159,0.35)) drop-shadow(0 0 20px rgba(255,150,200,0.25));
+            transition: transform .35s ease, filter .35s ease;
         }
         .logos img:hover {
-            transform: translateY(-3px) scale(1.06);
-            filter: drop-shadow(0 8px 16px rgba(255, 79, 159, 0.32));
+            transform: translateY(-4px) scale(1.08);
+            filter: drop-shadow(0 10px 24px rgba(255, 79, 159, 0.45)) drop-shadow(0 0 30px rgba(255,150,200,0.4));
         }
 
         .title {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 800;
             color: #ff1f8f;
-            margin-bottom: 6px;
-            text-shadow: 0 0 6px rgba(255,68,155,0.3), 0 0 18px rgba(255,110,175,0.25);
+            margin-bottom: 8px;
+            text-shadow: 0 0 8px rgba(255,68,155,0.35), 0 0 22px rgba(255,110,175,0.3);
         }
 
         .subtitle {
-            font-size: 1rem;
-            color: #222 !important;
+            font-size: 1.05rem;
+            color: #2a2a2a !important;
             font-weight: 600;
-            margin-bottom: 12px;
-            text-shadow: 0 0 3px rgba(0,0,0,0.05);
+            margin-bottom: 14px;
+            text-shadow: 0 0 4px rgba(0,0,0,0.04);
         }
 
         .micro-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 14px;
+            padding: 10px 16px;
             border-radius: 999px;
-            background: rgba(255,255,255,0.54);
+            background: rgba(255,255,255,0.65);
             color: #8f3660;
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             font-weight: 700;
-            margin-bottom: 18px;
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55);
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6), 0 4px 12px rgba(255,79,159,0.15);
         }
 
         .divider {
-            width: 75px;
+            width: 85px;
             height: 3px;
-            margin: 0 auto 24px;
+            margin: 0 auto 28px;
             border-radius: 999px;
             background: linear-gradient(to right, #ff4aa0, #ffa3da);
-            box-shadow: 0 0 12px rgba(255,90,160,0.55);
+            box-shadow: 0 0 14px rgba(255,90,160,0.6);
             animation: pulseGlow 2.8s ease-in-out infinite;
         }
 
         .info {
-            font-size: 0.95rem;
-            color: #222 !important;
-            line-height: 1.55;
-            margin-bottom: 28px;
+            font-size: 0.98rem;
+            color: #2a2a2a !important;
+            line-height: 1.65;
+            margin-bottom: 32px;
             font-weight: 500;
         }
 
@@ -166,20 +167,24 @@
             display: inline-block;
             position: relative;
             overflow: hidden;
-            padding: 12px 28px;
+            padding: 14px 36px;
             background: linear-gradient(135deg, #ff4c9d, #ff78b9);
             border-radius: 999px;
             color: #fff;
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 700;
-            border: 1px solid rgba(255,255,255,0.6);
-            box-shadow: 0 8px 22px rgba(255,76,157,0.40), inset 0 0 12px rgba(255,220,245,0.35);
-            transition: transform .22s ease, box-shadow .22s ease;
+            border: 1px solid rgba(255,255,255,0.65);
+            box-shadow: 0 10px 28px rgba(255,76,157,0.45), inset 0 0 14px rgba(255,220,245,0.4);
+            transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
         }
         .btn-enter:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 14px 34px rgba(255,76,157,0.55), inset 0 0 18px rgba(255,220,245,0.45);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 16px 40px rgba(255,76,157,0.6), inset 0 0 20px rgba(255,220,245,0.5), 0 0 30px rgba(255,76,157,0.3);
+            filter: brightness(1.05);
+        }
+        .btn-enter:active {
+            transform: translateY(-1px) scale(0.98);
         }
         .btn-enter::after {
             content: "";
@@ -193,11 +198,12 @@
         .copyright {
             width: 100%;
             text-align: center;
-            font-size: 0.8rem;
-            color: #555;
-            margin-top: 16px;
+            font-size: 0.82rem;
+            color: #7a4055;
+            margin-top: 18px;
             z-index: 3;
-            opacity: 0.75;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.5);
         }
 
         .ripple {
@@ -245,15 +251,50 @@
         }
 
         @media (max-width: 480px) {
-            body { padding: 10px; }
-            .cover-card { padding: 24px 18px; }
-            .logos img { height: 34px; }
-            .title { font-size: 1.55rem; }
-            .subtitle { font-size: .9rem; }
-            .info { font-size: .86rem; }
-            .btn-enter { padding: 10px 22px; font-size: .9rem; }
-            .copyright { font-size: 0.72rem; margin-top: 12px; }
+            body { padding: 12px; }
+            .cover-card { 
+                padding: 32px 22px; 
+                border-radius: 24px;
+                max-width: 100%;
+            }
+            .logos { margin-bottom: 24px; }
+            .logos img { height: 55px; }
+            .title { font-size: 1.7rem; }
+            .subtitle { font-size: .95rem; }
+            .micro-badge { 
+                font-size: 0.78rem; 
+                padding: 8px 12px;
+                margin-bottom: 16px;
+            }
+            .divider { 
+                width: 70px; 
+                margin-bottom: 22px;
+            }
+            .info { 
+                font-size: .9rem; 
+                line-height: 1.6;
+                margin-bottom: 26px;
+            }
+            .btn-enter { 
+                padding: 12px 28px; 
+                font-size: .95rem; 
+                transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+            }
+            .btn-enter:hover {
+                transform: translateY(-2px) scale(1.01);
+            }
+            .copyright { font-size: 0.75rem; color: #7a4055; margin-top: 14px; font-weight: 500; }
         }
+
+        @media (max-width: 360px) {
+            .cover-card { padding: 26px 18px; }
+            .logos { margin-bottom: 20px; }
+            .logos img { height: 48px; }
+            .title { font-size: 1.45rem; }
+            .subtitle { font-size: 0.88rem; }
+            .micro-badge { font-size: 0.72rem; padding: 6px 10px; }
+            .info { font-size: 0.85rem; margin-bottom: 22px; }
+            .btn-enter { padding: 11px 24px; font-size: 0.9rem; }
 
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -282,9 +323,7 @@
     <div class="cover-card" id="coverCard">
 
         <div class="logos fade-item delay-1">
-            <img src="Beauty Logo 1.png" alt="Beauty Logo">
-            <img src="ceria.png f.png" alt="Ceria Logo">
-            <img src="BEXMart Logo.png" alt="BEXmart Logo">
+            <img src="beauty-logo.png" alt="Beauty Logo" width="150" style="margin: 0 auto; display: block;">
         </div>
 
         <div class="micro-badge fade-item delay-2">Grand Opening - 10 April 2026 - 09.30 WITA</div>

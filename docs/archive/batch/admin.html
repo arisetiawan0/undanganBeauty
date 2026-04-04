@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin — Daftar Tamu | Beauty Raha Grand Opening</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-rose: #C0617A;
+            --blush-pink: #E08FA8;
+            --soft-pink: #F5C6D8;
+            --petal-blush: #FDE8F0;
+            --warm-white: #FFFAF9;
+            --gold-accent: #D4A96A;
+            --dark-text: #2C1520;
+            --muted-pink: #7A4055;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background: linear-gradient(135deg, var(--warm-white) 0%, var(--petal-blush) 100%);
+            min-height: 100vh;
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        /* Login Panel */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(192, 97, 122, 0.15);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-style: italic;
+            color: var(--deep-rose);
+            margin-bottom: 8px;
+        }
+
+        .login-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--muted-pink);
+            margin-bottom: 30px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+        }
+
+        .field label {
+            font-size: 14px;
+            color: var(--muted-pink);
+            font-weight: 500;
+        }
+
+        .field input {
+            padding: 14px 18px;
+            border: 2px solid var(--soft-pink);
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'Jost', sans-serif;
+            transition: all 0.2s ease;
+            background: var(--warm-white);
+        }
+
+        .field input:focus {
+            outline: none;
+            border-color: var(--deep-rose);
+            background: white;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            font-family: 'Jost', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--deep-rose) 0%, var(--blush-pink) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(192, 97, 122, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 20px;
+            box-shadow: 0 2px 20px rgba(192, 97, 122, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-style: italic;
+            color: var(--deep-rose);
+        }
+
+        .header-subtitle {
+            font-size: 13px;
+            color: var(--muted-pink);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            background: var(--petal-blush);
+            color: var(--deep-rose);
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--soft-pink);
+        }
+
+        .btn-danger {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+
+        .btn-danger:hover {
+            background: #ffcdd2;
+        }
+
+        .dashboard-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(192, 97, 122, 0.08);
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 600;
+            color: var(--deep-rose);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--muted-pink);
+        }
+
+        /* Table Section */
+        .table-section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(192, 97, 122, 0.08);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 25px;
+            border-bottom: 1px solid var(--petal-blush);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .table-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--dark-text);
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            padding: 10px 16px;
+            border: 2px solid var(--soft-pink);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Jost', sans-serif;
+            width: 200px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--deep-rose);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead {
+            background: var(--petal-blush);
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 500;
+            color: var(--muted-pink);
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s ease;
+        }
+
+        th:hover {
+            background: var(--soft-pink);
+        }
+
+        th.sortable::after {
+            content: ' ↕';
+            opacity: 0.5;
+            font-size: 12px;
+        }
+
+        th.sort-asc::after {
+            content: ' ↑';
+            opacity: 1;
+        }
+
+        th.sort-desc::after {
+            content: ' ↓';
+            opacity: 1;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--petal-blush);
+            color: var(--dark-text);
+        }
+
+        tr:hover td {
+            background: var(--warm-white);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .guest-names-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .guest-badge {
+            background: var(--petal-blush);
+            color: var(--deep-rose);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .timestamp {
+            color: var(--muted-pink);
+            font-size: 13px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted-pink);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-text {
+            font-size: 16px;
+        }
+
+        /* Loading State */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--petal-blush);
+            border-top-color: var(--deep-rose);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-box {
+                padding: 30px 20px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .table-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .hide-mobile {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-value {
+                font-size: 28px;
+            }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--dark-text);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            pointer-events: none;
+        }
+
+        .toast.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Container -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-box">
+            <div class="login-logo">Beauty Raha</div>
+            <div class="login-title">Admin — Daftar Tamu</div>
+            <form class="login-form" id="loginForm">
+                <div class="field">
+                    <label for="passwordInput">Password Admin</label>
+                    <input 
+                        type="password" 
+                        id="passwordInput" 
+                        name="password"
+                        placeholder="Masukkan password admin"
+                        required
+                        autocomplete="off"
+                    >
+                </div>
+                <button type="submit" class="btn btn-primary" id="loginButton">Masuk</button>
+                <div class="error-message" id="loginError"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div>
+                    <div class="header-brand">Beauty Raha</div>
+                    <div class="header-subtitle">Admin Dashboard — Grand Opening</div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="refreshBtn">🔄 Refresh Data</button>
+                    <button class="btn btn-secondary" id="exportBtn">📥 Export CSV</button>
+                    <button class="btn btn-danger" id="logoutBtn">🚪 Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🏢</div>
+                    <div class="stat-value" id="statBrands">0</div>
+                    <div class="stat-label">Total Brand</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-value" id="statGuests">0</div>
+                    <div class="stat-label">Total Tamu</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-value" id="statResponses">0</div>
+                    <div class="stat-label">Total Responden</div>
+                </div>
+            </div>
+
+            <!-- Table Section -->
+            <div class="table-section">
+                <div class="table-header">
+                    <div class="table-title">Daftar Tamu yang Sudah Konfirmasi</div>
+                    <div class="table-actions">
+                        <input 
+                            type="text" 
+                            class="search-input" 
+                            id="searchInput"
+                            placeholder="🔍 Cari brand atau nama..."
+                        >
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="sortable" data-sort="id">#</th>
+                                <th class="sortable" data-sort="brandName">Nama Brand</th>
+                                <th class="sortable hide-mobile" data-sort="guestCount">Jumlah</th>
+                                <th>Nama-nama Tamu</th>
+                                <th class="sortable" data-sort="createdAt">Waktu Konfirmasi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Data will be inserted here -->
+                        </tbody>
+                    </table>
+                    <div class="empty-state" id="emptyState" style="display: none;">
+                        <div class="empty-icon">📭</div>
+                        <div class="empty-text">Belum ada konfirmasi kehadiran</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script src="./rsvp-api.js"></script>
+    <script src="./admin.js"></script>
+</body>
+</html>

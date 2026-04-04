@@ -193,7 +193,7 @@
         .button-group {
             display: flex;
             justify-content: center;
-            gap: 14px;
+            gap: 18px;
             flex-wrap: wrap;
             margin-top: 12px;
             margin-bottom: 24px;
@@ -202,7 +202,7 @@
         .btn {
             position: relative;
             overflow: hidden;
-            padding: 14px 28px;
+            padding: 16px 32px;
             border-radius: 999px;
             font-size: 0.95rem;
             font-weight: 700;
@@ -211,33 +211,66 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-height: 48px;
-            transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
+            min-height: 52px;
+            white-space: nowrap;
+            transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        box-shadow .3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        background .3s cubic-bezier(0.4, 0, 0.2, 1),
+                        filter .3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn:hover {
             transform: translateY(-3px);
         }
 
+        .btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
         .btn-outline {
-            color: #ff4c9d;
-            border: 2px solid #ff4c9d;
-            background: transparent;
+            color: #d12379;
+            border: 1.5px solid rgba(255, 76, 157, 0.4);
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(255, 76, 157, 0.1), 
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.5);
         }
 
         .btn-outline:hover {
-            background: #ffe9f4;
+            background: rgba(255, 255, 255, 0.55);
+            box-shadow: 0 8px 25px rgba(255, 76, 157, 0.2), 
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.6),
+                        0 0 20px rgba(255, 76, 157, 0.15);
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .btn-outline::before {
+            content: none;
         }
 
         .btn-primary {
             border: 0;
             color: #fff;
-            background: linear-gradient(135deg, #ff4c9d, #ff67ae);
-            box-shadow: 0 12px 26px rgba(255, 76, 157, 0.3);
+            background: linear-gradient(135deg, #e91e8c 0%, #ff4c9d 50%, #ff85c0 100%);
+            box-shadow: 0 8px 25px rgba(233, 30, 140, 0.35), 
+                        0 0 0 1px rgba(255, 255, 255, 0.3) inset,
+                        0 4px 15px rgba(255, 76, 157, 0.2);
         }
 
         .btn-primary:hover {
-            box-shadow: 0 16px 32px rgba(255, 76, 157, 0.38);
+            box-shadow: 0 12px 35px rgba(233, 30, 140, 0.45), 
+                        0 0 0 1px rgba(255, 255, 255, 0.4) inset,
+                        0 0 30px rgba(255, 76, 157, 0.3);
+            transform: translateY(-3px) scale(1.03);
+            filter: brightness(1.08);
+        }
+
+        .btn-primary::before {
+            content: none;
+        }
+
+        .btn-primary[type="submit"]::before {
+            content: none;
         }
 
         .btn:disabled {
@@ -299,7 +332,7 @@
         }
 
         .rsvp-panel.is-open {
-            max-height: 1200px;
+            max-height: 2000px;
             opacity: 1;
             transform: translateY(0);
             margin-top: 6px;
@@ -403,10 +436,11 @@
 
         .copyright {
             margin-top: 16px;
-            font-size: 0.75rem;
-            color: #999;
+            font-size: 0.78rem;
+            color: #7a4055;
             text-align: center;
-            opacity: 0.85;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.5);
         }
 
         @keyframes cardIn {
@@ -462,8 +496,22 @@
                 min-width: 100%;
             }
 
-        .button-group {
-                gap: 12px;
+            .button-group {
+                gap: 14px;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 320px;
+                padding: 15px 24px;
+                font-size: 0.92rem;
+            }
+
+            .btn-outline::before,
+            .btn-primary::before {
+                font-size: 1em;
             }
 
             .rsvp-box {
@@ -495,7 +543,7 @@
     <div class="divider reveal delay-3"></div>
 
     <div class="content reveal delay-4">
-        Kami dengan bangga mengundang Bapak/Ibu untuk hadir dalam acara
+        Kami mengundang Bapak/Ibu untuk hadir dalam acara
         <b>Grand Opening Beauty Raha</b>.
         Kehadiran Bapak/Ibu sebagai mitra, sahabat brand, dan tamu undangan merupakan dukungan yang sangat berarti
         bagi langkah awal kami dalam menghadirkan pengalaman kecantikan yang hangat dan elegan di Raha.
@@ -537,7 +585,7 @@
             <form id="rsvpForm" novalidate>
                 <div class="field">
                     <label for="brandName">Dari Brand Apa?</label>
-                    <input id="brandName" name="brandName" type="text" minlength="2" placeholder="Contoh: PT Muna Cantik" required>
+                    <input id="brandName" name="brandName" type="text" minlength="2" required>
                 </div>
 
                 <div class="field">
@@ -570,6 +618,8 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<script src="../rsvp-api.js"></script>
 
 <script>
     const RSVP_STORAGE_KEY = "beauty-raha-rsvp-entries";
@@ -642,7 +692,6 @@
             input.id = `guest-${index}`;
             input.name = `guest-${index}`;
             input.type = "text";
-            input.placeholder = `Isi nama tamu ${index}`;
             input.required = true;
 
             wrap.append(label, input);
@@ -672,7 +721,7 @@
         brandNameInput?.focus();
     });
 
-    rsvpForm?.addEventListener("submit", (event) => {
+    rsvpForm?.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         if (localStorage.getItem(RSVP_SUBMIT_FLAG) === "true") {
@@ -698,22 +747,48 @@
             return;
         }
 
-        const entries = getStoredRsvps();
-        entries.unshift({
-            brandName,
-            guestCount,
-            guestNames,
-            createdAt: new Date().toISOString()
-        });
-
-        saveStoredRsvps(entries);
-        localStorage.setItem(RSVP_SUBMIT_FLAG, "true");
+        // Show loading state
         submitRsvpButton.disabled = true;
-        setFormStatus(`Terima kasih, ${brandName}. Konfirmasi berhasil dikirim.`, "success");
-        showToast(`Terima kasih, ${brandName}. Konfirmasi berhasil dikirim.`);
-        rsvpForm.reset();
-        guestCountInput.value = "1";
-        renderGuestFields();
+        submitRsvpButton.textContent = "Mengirim...";
+        setFormStatus("Mengirim konfirmasi kehadiran...", "info");
+
+        try {
+            // Send to API using RSVPAPI helper
+            const result = await window.RSVPAPI.submitRSVP({
+                brandName,
+                guestCount,
+                guestNames,
+            });
+
+            if (result.success) {
+                // Mark as submitted
+                localStorage.setItem(RSVP_SUBMIT_FLAG, "true");
+                
+                setFormStatus(`Terima kasih, ${brandName}. Konfirmasi berhasil dikirim.`, "success");
+                showToast(`Terima kasih, ${brandName}. Konfirmasi berhasil dikirim.`);
+                rsvpForm.reset();
+                guestCountInput.value = "1";
+                renderGuestFields();
+                
+                // Close the panel after successful submission
+                setTimeout(() => {
+                    rsvpPanel?.classList.remove("is-open");
+                }, 2000);
+            } else {
+                // Reset button state on error
+                submitRsvpButton.disabled = false;
+                submitRsvpButton.textContent = "Kirim Konfirmasi";
+                setFormStatus(result.error || "Gagal mengirim konfirmasi. Silakan coba lagi.", "error");
+                showToast(result.error || "Gagal mengirim konfirmasi.");
+            }
+        } catch (error) {
+            console.error("Submit error:", error);
+            // Reset button state on error
+            submitRsvpButton.disabled = false;
+            submitRsvpButton.textContent = "Kirim Konfirmasi";
+            setFormStatus("Terjadi kesalahan. Silakan coba lagi.", "error");
+            showToast("Terjadi kesalahan. Silakan coba lagi.");
+        }
     });
 
     document.querySelectorAll(".ripple-target").forEach((button) => {

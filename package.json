@@ -1,0 +1,46 @@
+{
+  "name": "beauty-raha-grand-opening",
+  "version": "1.2.0",
+  "description": "Website Undangan Digital Grand Opening Beauty Raha dengan TiDB Database",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "start": "next start",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "build": "next build",
+    "typecheck": "tsc --noEmit",
+    "server": "next dev -p 3000",
+    "deploy": "npx vercel --prod"
+  },
+  "keywords": [
+    "grand-opening",
+    "invitation",
+    "tidb",
+    "drizzle",
+    "beauty"
+  ],
+  "author": "Beauty Raha Team",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.30.10",
+    "mysql2": "^3.9.7",
+    "next": "^16.2.2",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vercel/node": "^3.0.0",
+    "drizzle-kit": "^0.21.4",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}
