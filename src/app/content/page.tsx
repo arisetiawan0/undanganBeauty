@@ -35,6 +35,7 @@ export default function ContentPage() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [brandName, setBrandName] = useState("");
   const [guestCount, setGuestCount] = useState(1);
+  const [guestCountInput, setGuestCountInput] = useState("1");
   const [guestNames, setGuestNames] = useState<string[]>([""]);
   const [statusMessage, setStatusMessage] = useState("");
   const [statusType, setStatusType] = useState<StatusType>("");
@@ -127,7 +128,24 @@ export default function ContentPage() {
   };
 
   const handleGuestCountChange = (value: string) => {
-    setGuestCount(clampGuestCount(Number(value)));
+    const digitsOnly = value.replace(/\D/g, "");
+
+    if (!digitsOnly) {
+      setGuestCountInput("");
+      return;
+    }
+
+    const nextGuestCount = clampGuestCount(Number(digitsOnly));
+
+    setGuestCountInput(String(nextGuestCount));
+    setGuestCount(nextGuestCount);
+  };
+
+  const commitGuestCount = () => {
+    const nextGuestCount = clampGuestCount(Number(guestCountInput));
+
+    setGuestCount(nextGuestCount);
+    setGuestCountInput(String(nextGuestCount));
   };
 
   const handleGuestNameChange = (index: number, value: string) => {
@@ -139,6 +157,11 @@ export default function ContentPage() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (!guestCountInput.trim()) {
+      setFormStatus("Jumlah tamu minimal 1 orang.", "error");
+      return;
+    }
+
     if (isSubmitted) {
       setFormStatus("Konfirmasi ganda diblokir untuk perangkat ini.", "error");
       showToast("Perangkat ini sudah pernah mengirim RSVP.", "error");
@@ -147,6 +170,12 @@ export default function ContentPage() {
 
     const cleanedBrandName = brandName.trim();
     const cleanedGuestNames = guestNames.map((item: string) => item.trim());
+    const nextGuestCount = clampGuestCount(Number(guestCountInput));
+
+    if (nextGuestCount !== guestCount) {
+      setGuestCount(nextGuestCount);
+      setGuestCountInput(String(nextGuestCount));
+    }
 
     if (cleanedBrandName.length < 2) {
       setFormStatus("Nama brand atau instansi minimal 2 karakter.", "error");
@@ -154,7 +183,10 @@ export default function ContentPage() {
       return;
     }
 
-    if (cleanedGuestNames.length !== guestCount || cleanedGuestNames.some((item: string) => item.length < 2)) {
+    if (
+      cleanedGuestNames.length !== nextGuestCount ||
+      cleanedGuestNames.some((item: string) => item.length < 2)
+    ) {
       setFormStatus("Semua nama tamu wajib diisi dengan benar.", "error");
       return;
     }
@@ -173,7 +205,7 @@ export default function ContentPage() {
         },
         body: JSON.stringify({
           brandName: cleanedBrandName,
-          guestCount,
+          guestCount: nextGuestCount,
           guestNames: cleanedGuestNames,
         }),
       });
@@ -193,6 +225,7 @@ export default function ContentPage() {
       setFormStatus(`Terima kasih, ${cleanedBrandName}. Kehadiran Anda sudah tercatat.`, "success");
       setBrandName("");
       setGuestCount(1);
+      setGuestCountInput("1");
       setGuestNames([""]);
     } catch (error) {
       const message =
@@ -331,16 +364,17 @@ export default function ContentPage() {
 
                   <div className={styles.field}>
                     <label htmlFor="guestCount">Jumlah Tamu yang Hadir</label>
-                    <input
-                      id="guestCount"
-                      name="guestCount"
-                      type="number"
-                      min={1}
-                      max={10}
-                      required
-                      value={guestCount}
-                      onChange={(event) => handleGuestCountChange(event.target.value)}
-                    />
+                      <input
+                        id="guestCount"
+                        name="guestCount"
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        required
+                        value={guestCountInput}
+                        onBlur={commitGuestCount}
+                        onChange={(event) => handleGuestCountChange(event.target.value)}
+                      />
                     <span className={styles.helperText}>{guestCount} nama tamu wajib diisi.</span>
                   </div>
 
