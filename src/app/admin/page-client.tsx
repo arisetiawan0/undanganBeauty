@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import type { FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
@@ -9,9 +10,6 @@ type SortField = "id" | "brandName" | "guestCount" | "createdAt";
 type SortDirection = "asc" | "desc";
 type StatKind = "brands" | "guests" | "responses";
 
-const ADMIN_PANEL_NAME = "Invitation Admin";
-const ADMIN_PANEL_TAGLINE = "Kelola daftar tamu untuk acara Anda";
-const ADMIN_LOGIN_TITLE = "Dashboard Daftar Tamu";
 const EXPORT_FILE_PREFIX = "rsvp-invitations";
 const TABLE_PAGE_SIZE = 8;
 
@@ -64,10 +62,107 @@ function StatIcon({ kind }: { kind: StatKind }) {
   );
 }
 
+function UiIcon({
+  name,
+  className,
+}: {
+  name: "arrow" | "download" | "eye" | "eyeOff" | "lock" | "logout" | "refresh" | "search" | "shield";
+  className?: string;
+}) {
+  const commonProps = {
+    className,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.8,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    "aria-hidden": true,
+  };
+
+  if (name === "arrow") {
+    return (
+      <svg {...commonProps}>
+        <path d="M5 12h14M14 7l5 5-5 5" />
+      </svg>
+    );
+  }
+
+  if (name === "download") {
+    return (
+      <svg {...commonProps}>
+        <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14" />
+      </svg>
+    );
+  }
+
+  if (name === "eye" || name === "eyeOff") {
+    return (
+      <svg {...commonProps}>
+        <path d="M2.5 12s3.5-5.5 9.5-5.5 9.5 5.5 9.5 5.5-3.5 5.5-9.5 5.5S2.5 12 2.5 12Z" />
+        <circle cx="12" cy="12" r="2.5" />
+        {name === "eyeOff" ? <path d="m4 4 16 16" /> : null}
+      </svg>
+    );
+  }
+
+  if (name === "lock") {
+    return (
+      <svg {...commonProps}>
+        <rect x="5" y="10" width="14" height="11" rx="3" />
+        <path d="M8.5 10V7.5a3.5 3.5 0 0 1 7 0V10M12 14.5v2" />
+      </svg>
+    );
+  }
+
+  if (name === "logout") {
+    return (
+      <svg {...commonProps}>
+        <path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4M14 8l4 4-4 4M9 12h9" />
+      </svg>
+    );
+  }
+
+  if (name === "refresh") {
+    return (
+      <svg {...commonProps}>
+        <path d="M20 6v5h-5M4 18v-5h5" />
+        <path d="M18.2 9A7 7 0 0 0 6.4 6.4L4 9m16 6-2.4 2.6A7 7 0 0 1 5.8 15" />
+      </svg>
+    );
+  }
+
+  if (name === "search") {
+    return (
+      <svg {...commonProps}>
+        <circle cx="11" cy="11" r="6.5" />
+        <path d="m16 16 4 4" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg {...commonProps}>
+      <path d="M12 3 5 6v5c0 4.5 2.9 8.3 7 10 4.1-1.7 7-5.5 7-10V6l-7-3Z" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  );
+}
+
+function EmptyInboxIcon() {
+  return (
+    <svg viewBox="0 0 64 64" className={styles.emptyIconSvg} aria-hidden="true">
+      <path d="M15 17.5h34l7 28H8l7-28Z" className={styles.emptyIconSurface} />
+      <path d="m9 41 11-1 4 6h16l4-6 11 1M22 27h20M25 33h14" className={styles.emptyIconLine} />
+    </svg>
+  );
+}
+
 export default function AdminPageClient() {
   const [isCheckingSession, setIsCheckingSession] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState("");
   const [isSubmittingLogin, setIsSubmittingLogin] = useState(false);
   const [isLoadingData, setIsLoadingData] = useState(false);
@@ -308,121 +403,221 @@ export default function AdminPageClient() {
 
   const sortClassName = (field: SortField) => {
     if (sortField !== field) {
-      return `${styles.tableHeading} ${styles.sortable}`;
+      return styles.sortButton;
     }
 
-    return `${styles.tableHeading} ${styles.sortable} ${sortDirection === "asc" ? styles.sortAsc : styles.sortDesc}`;
+    return `${styles.sortButton} ${sortDirection === "asc" ? styles.sortAsc : styles.sortDesc}`;
   };
 
-  const statItems: Array<{ kind: StatKind; label: string; value: number; accentClassName: string }> = [
+  const statItems: Array<{ kind: StatKind; label: string; value: number; description: string }> = [
     {
       kind: "brands",
-      label: "Total Brand",
+      label: "Brand terdaftar",
       value: stats.totalBrands,
-      accentClassName: styles.statAccentBrands,
+      description: "Instansi yang mengirim konfirmasi",
     },
     {
       kind: "guests",
-      label: "Total Tamu",
+      label: "Tamu akan hadir",
       value: stats.totalGuests,
-      accentClassName: styles.statAccentGuests,
+      description: "Total tamu dari seluruh undangan",
     },
     {
       kind: "responses",
-      label: "Total Responden",
+      label: "Konfirmasi masuk",
       value: stats.totalResponses,
-      accentClassName: styles.statAccentResponses,
+      description: "Respons yang sudah diterima",
     },
   ];
 
   return (
     <main className={styles.page}>
       {!isAuthenticated ? (
-        <div className={styles.loginContainer}>
-          <div className={styles.loginBox}>
-            <div className={styles.loginLogo}>{ADMIN_PANEL_NAME}</div>
-            <div className={styles.loginTitle}>{ADMIN_LOGIN_TITLE}</div>
-            <p className={styles.loginDescription}>{ADMIN_PANEL_TAGLINE}</p>
-
-            <form className={styles.loginForm} onSubmit={handleLogin}>
-              <div className={styles.field}>
-                <label htmlFor="passwordInput">Password Admin</label>
-                <input
-                  ref={passwordInputRef}
-                  id="passwordInput"
-                  name="password"
-                  type="password"
-                  placeholder="Masukkan password admin"
-                  autoComplete="current-password"
-                  required
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                />
+        <div className={styles.loginStage}>
+          <section className={styles.loginShell} aria-labelledby="login-title">
+            <aside className={styles.loginBrandPanel}>
+              <div className={styles.loginBrandTop}>
+                <span className={styles.brandMark}>
+                  <Image src="/favicon.png" alt="" width={46} height={46} priority />
+                </span>
+                <span>
+                  <strong>Beauty Katamso</strong>
+                  <small>Grand Opening</small>
+                </span>
               </div>
 
-              <button type="submit" className={`${styles.button} ${styles.buttonPrimary}`} disabled={isSubmittingLogin || isCheckingSession}>
-                {isCheckingSession ? "Memeriksa..." : isSubmittingLogin ? "Masuk..." : "Masuk"}
-              </button>
+              <div className={styles.loginBrandCopy}>
+                <div className={styles.brandEyebrow}>
+                  <span className={styles.liveDot} />
+                  Akses khusus tim internal
+                </div>
+                <h2>Satu ruang untuk setiap konfirmasi.</h2>
+                <p>Pantau daftar tamu, perbarui data, dan siapkan laporan acara dari satu dashboard.</p>
+              </div>
 
-              <div className={styles.errorMessage}>{loginError}</div>
-            </form>
-          </div>
+              <div className={styles.loginBrandFooter}>
+                <span>Invitation Console</span>
+                <span>Mowila, Konawe Selatan</span>
+              </div>
+            </aside>
+
+            <div className={styles.loginFormPanel}>
+              <div className={styles.loginFormInner}>
+                <div className={styles.loginEyebrow}>Admin portal</div>
+                <h1 id="login-title" className={styles.loginTitle}>Selamat datang kembali</h1>
+                <p className={styles.loginDescription}>
+                  Masukkan password admin untuk membuka dashboard konfirmasi tamu.
+                </p>
+
+                <form className={styles.loginForm} onSubmit={handleLogin}>
+                  <div className={styles.field}>
+                    <label htmlFor="passwordInput">Password admin</label>
+                    <div className={`${styles.inputWrap} ${loginError ? styles.inputWrapError : ""}`}>
+                      <UiIcon name="lock" className={styles.inputIcon} />
+                      <input
+                        ref={passwordInputRef}
+                        id="passwordInput"
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Masukkan password"
+                        autoComplete="current-password"
+                        required
+                        value={password}
+                        aria-invalid={Boolean(loginError)}
+                        aria-describedby={loginError ? "login-error" : undefined}
+                        onChange={(event) => setPassword(event.target.value)}
+                      />
+                      <button
+                        type="button"
+                        className={styles.passwordToggle}
+                        onClick={() => setShowPassword((current) => !current)}
+                        aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}
+                      >
+                        <UiIcon name={showPassword ? "eyeOff" : "eye"} />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div id="login-error" className={styles.errorMessage} role="alert">
+                    {loginError}
+                  </div>
+
+                  <button
+                    type="submit"
+                    className={`${styles.button} ${styles.buttonPrimary} ${styles.loginButton}`}
+                    disabled={isSubmittingLogin || isCheckingSession}
+                  >
+                    <span>{isCheckingSession ? "Memeriksa sesi..." : isSubmittingLogin ? "Membuka dashboard..." : "Masuk ke dashboard"}</span>
+                    {!isCheckingSession && !isSubmittingLogin ? <UiIcon name="arrow" /> : <span className={styles.buttonLoader} />}
+                  </button>
+                </form>
+
+                <div className={styles.securityNote}>
+                  <UiIcon name="shield" />
+                  <span>Sesi admin dilindungi dan akan berakhir secara otomatis.</span>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       ) : (
         <div className={styles.dashboard}>
           <header className={styles.dashboardHeader}>
             <div className={styles.headerContent}>
-              <div>
-                <div className={styles.headerBrand}>{ADMIN_PANEL_NAME}</div>
-                <div className={styles.headerSubtitle}>{ADMIN_PANEL_TAGLINE}</div>
+              <div className={styles.headerIdentity}>
+                <span className={styles.headerMark}>
+                  <Image src="/favicon.png" alt="" width={38} height={38} />
+                </span>
+                <span className={styles.headerName}>
+                  <strong>Beauty Katamso</strong>
+                  <small>Invitation Console</small>
+                </span>
               </div>
 
               <div className={styles.headerActions}>
-                <button className={`${styles.button} ${styles.buttonSecondary}`} onClick={() => void loadData()}>
-                  Refresh Data
+                <button
+                  className={`${styles.button} ${styles.buttonSecondary}`}
+                  onClick={() => void loadData()}
+                  disabled={isLoadingData}
+                >
+                  <UiIcon name="refresh" />
+                  <span>Perbarui</span>
                 </button>
-                <button className={`${styles.button} ${styles.buttonSecondary}`} onClick={() => void handleExport()}>
-                  Export CSV
+                <button
+                  className={`${styles.button} ${styles.buttonSecondary}`}
+                  onClick={() => void handleExport()}
+                  disabled={isLoadingData}
+                >
+                  <UiIcon name="download" />
+                  <span>Unduh CSV</span>
                 </button>
-                <button className={`${styles.button} ${styles.buttonDanger}`} onClick={() => void handleLogout()}>
-                  Logout
+                <span className={styles.actionDivider} />
+                <button className={`${styles.button} ${styles.buttonGhost}`} onClick={() => void handleLogout()}>
+                  <UiIcon name="logout" />
+                  <span>Keluar</span>
                 </button>
               </div>
             </div>
           </header>
 
           <section className={styles.dashboardContent}>
+            <div className={styles.dashboardIntro}>
+              <div>
+                <div className={styles.sectionEyebrow}>Pusat administrasi</div>
+                <h1>Ringkasan kehadiran</h1>
+                <p>Kelola seluruh konfirmasi tamu Grand Opening Beauty Katamso.</p>
+              </div>
+              <div className={styles.syncStatus}>
+                <span className={styles.liveDot} />
+                Data tersinkron
+              </div>
+            </div>
+
             <div className={styles.statsGrid}>
               {statItems.map((item) => (
-                <article key={item.kind} className={`${styles.statCard} ${item.accentClassName}`}>
-                  <div className={styles.statIconWrap}>
-                    <div className={styles.statIconGlow} />
+                <article
+                  key={item.kind}
+                  className={`${styles.statCard} ${item.kind === "guests" ? styles.statCardPrimary : ""}`}
+                >
+                  <div className={styles.statCardTop}>
                     <div className={styles.statIconBadge}>
                       <StatIcon kind={item.kind} />
                     </div>
+                    <span className={styles.statIndex}>0{statItems.findIndex((stat) => stat.kind === item.kind) + 1}</span>
                   </div>
                   <div className={styles.statValue}>{item.value}</div>
                   <div className={styles.statLabel}>{item.label}</div>
+                  <div className={styles.statDescription}>{item.description}</div>
                 </article>
               ))}
             </div>
 
-            <div className={styles.tableSection}>
+            <section className={styles.tableSection} aria-labelledby="guest-list-title">
               <div className={styles.tableHeader}>
-                <div>
-                  <div className={styles.tableTitle}>Daftar Konfirmasi Kehadiran</div>
+                <div className={styles.tableHeadingGroup}>
+                  <div className={styles.tableTitleLine}>
+                    <h2 id="guest-list-title" className={styles.tableTitle}>Daftar konfirmasi</h2>
+                    <span className={styles.entryCount}>{sortedEntries.length} entri</span>
+                  </div>
                   <div className={styles.tableMeta}>
-                    Menampilkan {pageStart}-{pageEnd} dari {sortedEntries.length} entri
+                    Menampilkan {pageStart}–{pageEnd} dari seluruh respons kehadiran
                   </div>
                 </div>
-                <div className={styles.tableActions}>
+                <div className={styles.searchWrap}>
+                  <UiIcon name="search" className={styles.searchIcon} />
                   <input
                     className={styles.searchInput}
                     type="text"
                     value={searchQuery}
                     onChange={(event) => setSearchQuery(event.target.value)}
-                    placeholder="Cari brand, instansi, atau nama tamu..."
+                    placeholder="Cari brand atau nama tamu"
+                    aria-label="Cari brand atau nama tamu"
                   />
+                  {searchQuery ? (
+                    <button type="button" className={styles.clearSearch} onClick={() => setSearchQuery("")} aria-label="Hapus pencarian">
+                      ×
+                    </button>
+                  ) : null}
                 </div>
               </div>
 
@@ -430,18 +625,26 @@ export default function AdminPageClient() {
                 <table className={styles.dataTable}>
                   <thead className={styles.tableHead}>
                     <tr className={styles.tableRow}>
-                      <th className={sortClassName("id")} onClick={() => toggleSort("id")}>
-                        ID
+                      <th className={styles.tableHeading}>
+                        <button className={sortClassName("id")} onClick={() => toggleSort("id")}>
+                          ID
+                        </button>
                       </th>
-                      <th className={sortClassName("brandName")} onClick={() => toggleSort("brandName")}>
-                        Brand / Instansi
+                      <th className={styles.tableHeading}>
+                        <button className={sortClassName("brandName")} onClick={() => toggleSort("brandName")}>
+                          Brand / Instansi
+                        </button>
                       </th>
-                      <th className={`${sortClassName("guestCount")} ${styles.hideMobile}`} onClick={() => toggleSort("guestCount")}>
-                        Tamu Hadir
+                      <th className={`${styles.tableHeading} ${styles.hideMobile}`}>
+                        <button className={sortClassName("guestCount")} onClick={() => toggleSort("guestCount")}>
+                          Tamu
+                        </button>
                       </th>
                       <th className={styles.tableHeading}>Daftar Tamu</th>
-                      <th className={sortClassName("createdAt")} onClick={() => toggleSort("createdAt")}>
-                        Waktu Masuk
+                      <th className={styles.tableHeading}>
+                        <button className={sortClassName("createdAt")} onClick={() => toggleSort("createdAt")}>
+                          Waktu masuk
+                        </button>
                       </th>
                     </tr>
                   </thead>
@@ -471,8 +674,11 @@ export default function AdminPageClient() {
 
                 {sortedEntries.length === 0 ? (
                   <div className={styles.emptyState}>
-                    <div className={styles.emptyIcon}>📭</div>
-                    <div className={styles.emptyText}>Belum ada konfirmasi kehadiran</div>
+                    <EmptyInboxIcon />
+                    <div className={styles.emptyTitle}>{searchQuery ? "Tidak ada hasil yang cocok" : "Belum ada konfirmasi"}</div>
+                    <div className={styles.emptyText}>
+                      {searchQuery ? "Coba gunakan kata kunci yang lebih singkat." : "Respons tamu akan muncul di sini setelah dikirim."}
+                    </div>
                   </div>
                 ) : (
                   <div className={styles.paginationBar}>
@@ -487,6 +693,7 @@ export default function AdminPageClient() {
                         onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
                         disabled={currentPage === 1}
                       >
+                        <span aria-hidden="true">←</span>
                         Sebelumnya
                       </button>
 
@@ -508,21 +715,26 @@ export default function AdminPageClient() {
                         disabled={currentPage === totalPages}
                       >
                         Berikutnya
+                        <span aria-hidden="true">→</span>
                       </button>
                     </div>
                   </div>
                 )}
               </div>
-            </div>
+            </section>
           </section>
         </div>
       )}
 
-      <div className={`${styles.loadingOverlay} ${isLoadingData ? styles.loadingOverlayActive : ""}`}>
-        <div className={styles.spinner} />
+      <div className={`${styles.loadingNotice} ${isLoadingData ? styles.loadingNoticeActive : ""}`} role="status">
+        <span className={styles.loadingPulse} />
+        Memperbarui data
       </div>
 
-      <div className={`${styles.toast} ${toastMessage ? styles.toastVisible : ""}`}>{toastMessage}</div>
+      <div className={`${styles.toast} ${toastMessage ? styles.toastVisible : ""}`} role="status">
+        <span className={styles.toastCheck}>✓</span>
+        {toastMessage}
+      </div>
     </main>
   );
 }
