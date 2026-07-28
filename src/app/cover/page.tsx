@@ -9,7 +9,7 @@ export default function CoverPage() {
         <div className={styles.logos}>
           <Image
             src="/beauty-logo.png"
-            alt="Beauty Raha"
+            alt="Beauty Katamso"
             width={150}
             height={65}
             priority
@@ -18,8 +18,8 @@ export default function CoverPage() {
           />
         </div>
 
-        <h1 className={styles.title}>Grand Opening Beauty Raha</h1>
-        <p className={styles.subtitle}>Undangan • 10 April 2026 • 09.30 WITA</p>
+        <h1 className={styles.title}>Grand Opening Beauty Katamso</h1>
+        <p className={styles.subtitle}>Undangan • 08 Agustus 2026 • 09.00 WITA</p>
 
         <Link href="/content" className={styles.button}>
           Buka Undangan

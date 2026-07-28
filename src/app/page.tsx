@@ -1,135 +1,215 @@
 "use client";
 
-import type { MouseEvent as ReactMouseEvent } from "react";
+import type { PointerEvent as ReactPointerEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import {
+  MotionConfig,
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+} from "motion/react";
 import styles from "./page.module.css";
 
+function CalendarIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M7 3v3M17 3v3M4.5 9.5h15M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" />
+    </svg>
+  );
+}
+
+function ClockIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 2" />
+    </svg>
+  );
+}
+
+function PinIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" />
+      <circle cx="12" cy="10" r="2.25" />
+    </svg>
+  );
+}
+
+function ArrowIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M5 12h13M14 7l5 5-5 5" />
+    </svg>
+  );
+}
+
+function BotanicalFlourish({ side }: { side: "left" | "right" }) {
+  return (
+    <svg
+      className={`${styles.botanical} ${
+        side === "right" ? styles.botanicalRight : styles.botanicalLeft
+      }`}
+      viewBox="0 0 150 250"
+      aria-hidden="true"
+    >
+      <path d="M22 230C31 174 48 120 102 32" />
+      <path d="M42 163c-25-2-34-14-35-30 22-1 35 8 35 30Z" />
+      <path d="M61 121c-7-22-1-38 15-47 9 21 4 36-15 47Z" />
+      <path d="M75 94c21-7 37-2 46 13-19 10-35 5-46-13Z" />
+      <path d="M94 50c-3-18 4-31 18-38 5 17-1 30-18 38Z" />
+      <circle cx="34" cy="188" r="3" />
+      <circle cx="83" cy="73" r="2.5" />
+    </svg>
+  );
+}
+
 export default function HomePage() {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const blobRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const shouldReduceMotion = useReducedMotion();
+  const springConfig = { stiffness: 150, damping: 24, mass: 0.7 };
+  const smoothX = useSpring(pointerX, springConfig);
+  const smoothY = useSpring(pointerY, springConfig);
+  const rotateX = useTransform(smoothY, [-0.5, 0.5], [2.4, -2.4]);
+  const rotateY = useTransform(smoothX, [-0.5, 0.5], [-3, 3]);
+  const cardTransform = useMotionTemplate`perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
 
-  useEffect(() => {
-    const card = cardRef.current;
-    const blobs = blobRefs.current.filter(Boolean) as HTMLDivElement[];
-
-    if (!card || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const handlePointerMove = (event: ReactPointerEvent<HTMLElement>) => {
+    if (
+      shouldReduceMotion ||
+      event.pointerType !== "mouse" ||
+      !window.matchMedia("(hover: hover) and (pointer: fine)").matches
+    ) {
       return;
     }
 
-    const handleMouseMove = (event: MouseEvent) => {
-      const rect = card.getBoundingClientRect();
-      const px = (event.clientX - rect.left) / rect.width;
-      const py = (event.clientY - rect.top) / rect.height;
-      const rotateY = (px - 0.5) * 10;
-      const rotateX = (0.5 - py) * 10;
+    const rect = event.currentTarget.getBoundingClientRect();
+    pointerX.set((event.clientX - rect.left) / rect.width - 0.5);
+    pointerY.set((event.clientY - rect.top) / rect.height - 0.5);
+  };
 
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-
-      blobs.forEach((blob, index) => {
-        const depth = (index + 1) * 8;
-        const moveX = (event.clientX / window.innerWidth - 0.5) * depth;
-        const moveY = (event.clientY / window.innerHeight - 0.5) * depth;
-        blob.style.transform = `translate(${moveX}px, ${moveY}px)`;
-      });
-    };
-
-    const handleMouseLeave = () => {
-      card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
-      blobs.forEach((blob) => {
-        blob.style.transform = "translate(0, 0)";
-      });
-    };
-
-    document.addEventListener("mousemove", handleMouseMove);
-    card.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      card.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, []);
-
-  const handleRipple = (event: ReactMouseEvent<HTMLElement>) => {
-    const target = event.currentTarget;
-    const rect = target.getBoundingClientRect();
-    const ripple = document.createElement("span");
-
-    ripple.className = styles.ripple;
-    ripple.style.left = `${event.clientX - rect.left}px`;
-    ripple.style.top = `${event.clientY - rect.top}px`;
-
-    target.appendChild(ripple);
-    window.setTimeout(() => ripple.remove(), 700);
+  const resetPointer = () => {
+    pointerX.set(0);
+    pointerY.set(0);
   };
 
   return (
-    <main className={styles.page}>
-      <div
-        ref={(node: HTMLDivElement | null) => {
-          blobRefs.current[0] = node;
-        }}
-        className={`${styles.blob} ${styles.blobOne}`}
-      />
-      <div
-        ref={(node: HTMLDivElement | null) => {
-          blobRefs.current[1] = node;
-        }}
-        className={`${styles.blob} ${styles.blobTwo}`}
-      />
+    <MotionConfig reducedMotion="user">
+      <main className={styles.page}>
+        <div className={`${styles.ambientGlow} ${styles.glowTop}`} aria-hidden="true" />
+        <div className={`${styles.ambientGlow} ${styles.glowBottom}`} aria-hidden="true" />
+        <div className={styles.backgroundRing} aria-hidden="true" />
 
-      <div className={styles.petals} aria-hidden="true">
-        {Array.from({ length: 6 }).map((_, index) => (
-          <span key={index} className={styles.petal} />
-        ))}
-      </div>
+        <BotanicalFlourish side="left" />
+        <BotanicalFlourish side="right" />
 
-      <div ref={cardRef} className={styles.coverCard}>
-        <div className={`${styles.logos} ${styles.fadeItem} ${styles.delay1}`}>
-          <Image
-            src="/beauty-logo.png"
-            alt="Beauty Raha"
-            width={360}
-            height={120}
-            priority
-            className={styles.logoImage}
-            style={{ height: "auto" }}
-          />
-        </div>
-
-        <div className={`${styles.microBadge} ${styles.fadeItem} ${styles.delay2}`}>
-          Grand Opening - 10 April 2026 - 09.30 WITA
-        </div>
-
-        <h1 className={`${styles.title} ${styles.fadeItem} ${styles.delay3}`}>
-          Grand Opening Beauty Raha
-        </h1>
-
-        <p className={`${styles.subtitle} ${styles.fadeItem} ${styles.delay3}`}>
-          Undangan resmi - Jl. Sukowati, Raha I, Kec. Katobu
-        </p>
-
-        <div className={`${styles.divider} ${styles.fadeItem} ${styles.delay4}`} />
-
-        <p className={`${styles.info} ${styles.fadeItem} ${styles.delay4}`}>
-          Kami mengundang Bapak/Ibu untuk hadir dalam peresmian <b>Beauty Raha</b> dan
-          merayakan momen pembukaan bersama para mitra, rekan bisnis, dan sahabat brand
-          kami.
-        </p>
-
-        <Link
-          href="/content"
-          className={`${styles.button} ${styles.fadeItem} ${styles.delay5}`}
-          onClick={handleRipple}
+        <motion.div
+          className={styles.cardEntrance}
+          initial={
+            shouldReduceMotion
+              ? { opacity: 0 }
+              : { opacity: 0, transform: "translateY(18px) scale(0.985)" }
+          }
+          animate={{ opacity: 1, transform: "translateY(0px) scale(1)" }}
+          transition={{ duration: 0.65, ease: [0.23, 1, 0.32, 1] }}
         >
-          Buka Undangan
-        </Link>
-      </div>
+          <motion.article
+            className={styles.invitation}
+            style={shouldReduceMotion ? undefined : { transform: cardTransform }}
+            onPointerMove={handlePointerMove}
+            onPointerLeave={resetPointer}
+            aria-labelledby="invitation-title"
+          >
+            <span className={`${styles.corner} ${styles.cornerTopLeft}`} aria-hidden="true" />
+            <span className={`${styles.corner} ${styles.cornerTopRight}`} aria-hidden="true" />
+            <span className={`${styles.corner} ${styles.cornerBottomLeft}`} aria-hidden="true" />
+            <span className={`${styles.corner} ${styles.cornerBottomRight}`} aria-hidden="true" />
 
-      <div className={styles.copyright}>
-        &copy; 2026 Beauty Raha - Marketing Communication. All rights reserved.
-      </div>
-    </main>
+            <div className={styles.innerFrame}>
+              <div className={`${styles.reveal} ${styles.delayOne}`}>
+                <p className={styles.eyebrow}>
+                  <span />
+                  Undangan Grand Opening
+                  <span />
+                </p>
+
+                <Image
+                  src="/beauty-logo.png"
+                  alt="Beauty Katamso"
+                  width={420}
+                  height={105}
+                  priority
+                  className={styles.logo}
+                />
+              </div>
+
+              <div className={`${styles.reveal} ${styles.delayTwo}`}>
+                <p className={styles.kicker}>A new chapter begins</p>
+                <h1 id="invitation-title" className={styles.title}>
+                  Grand Opening
+                </h1>
+                <p className={styles.storeName}>Beauty Katamso</p>
+              </div>
+
+              <div className={`${styles.eventDetails} ${styles.reveal} ${styles.delayThree}`}>
+                <div className={styles.eventItem}>
+                  <CalendarIcon />
+                  <span>
+                    <small>Sabtu</small>
+                    08 Agustus 2026
+                  </span>
+                </div>
+                <span className={styles.detailDivider} aria-hidden="true" />
+                <div className={styles.eventItem}>
+                  <ClockIcon />
+                  <span>
+                    <small>Waktu</small>
+                    09.00 WITA
+                  </span>
+                </div>
+              </div>
+
+              <p className={`${styles.message} ${styles.reveal} ${styles.delayFour}`}>
+                Dengan penuh sukacita, kami mengundang Bapak/Ibu untuk hadir dan
+                merayakan awal perjalanan baru bersama kami.
+              </p>
+
+              <div className={`${styles.location} ${styles.reveal} ${styles.delayFive}`}>
+                <span className={styles.locationIcon}>
+                  <PinIcon />
+                </span>
+                <span>
+                  <small>Lokasi Acara</small>
+                  Jl. Poros Kendari–Motaha, Mowila
+                </span>
+              </div>
+
+              <div className={`${styles.action} ${styles.reveal} ${styles.delaySix}`}>
+                <Link
+                  href="/content"
+                  className={styles.button}
+                  aria-label="Buka detail undangan Grand Opening Beauty Katamso"
+                >
+                  <span>Lihat Undangan</span>
+                  <span className={styles.buttonIcon}>
+                    <ArrowIcon />
+                  </span>
+                </Link>
+                <p className={styles.actionHint}>Detail acara dan konfirmasi kehadiran</p>
+              </div>
+            </div>
+          </motion.article>
+        </motion.div>
+
+        <p className={styles.copyright}>
+          Beauty Katamso <span aria-hidden="true">•</span> Grand Opening 2026
+        </p>
+      </main>
+    </MotionConfig>
   );
 }

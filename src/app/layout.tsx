@@ -11,8 +11,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Grand Opening Beauty Raha",
-  description: "Undangan digital Grand Opening Beauty Raha.",
+  title: "Grand Opening Beauty Katamso",
+  description: "Undangan digital Grand Opening Beauty Katamso.",
   icons: {
     icon: "/favicon.png",
   },

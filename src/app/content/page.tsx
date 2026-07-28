@@ -1,12 +1,14 @@
 "use client";
 
 import type { FormEvent, MouseEvent as ReactMouseEvent } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 
 const RSVP_SUBMIT_FLAG = "beauty-raha-rsvp-submitted";
 const RSVP_SUBMITTED_BRAND_KEY = "beauty-raha-rsvp-submitted-brand";
-const EVENT_DATE = "2026-04-10T09:30:00+08:00";
+const EVENT_DATE = "2026-08-08T09:00:00+08:00";
 
 type StatusType = "success" | "error" | "info" | "";
 
@@ -20,18 +22,68 @@ function clampGuestCount(value: number) {
   return Math.max(1, Math.min(10, value || 1));
 }
 
-function formatCountdown() {
-  const target = new Date(EVENT_DATE).getTime();
-  const diff = Math.max(target - Date.now(), 0);
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+type Countdown = {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+  isPast: boolean;
+};
 
-  return `${days} hari ${hours} jam ${minutes} menit lagi`;
+function getCountdown(): Countdown {
+  const target = new Date(EVENT_DATE).getTime();
+  const diff = target - Date.now();
+  const safeDiff = Math.max(diff, 0);
+
+  return {
+    days: Math.floor(safeDiff / (1000 * 60 * 60 * 24)),
+    hours: Math.floor(safeDiff / (1000 * 60 * 60)) % 24,
+    minutes: Math.floor(safeDiff / (1000 * 60)) % 60,
+    seconds: Math.floor(safeDiff / 1000) % 60,
+    isPast: diff <= 0,
+  };
+}
+
+function pad(value: number) {
+  return String(value).padStart(2, "0");
+}
+
+function CalendarIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M7 3v3M17 3v3M4.5 9.5h15M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" />
+    </svg>
+  );
+}
+
+function ClockIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 2" />
+    </svg>
+  );
+}
+
+function PinIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" />
+      <circle cx="12" cy="10" r="2.25" />
+    </svg>
+  );
+}
+
+function ArrowLeftIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M19 12H5M10 7l-5 5 5 5" />
+    </svg>
+  );
 }
 
 export default function ContentPage() {
-  const [countdownText, setCountdownText] = useState(formatCountdown);
+  const [countdown, setCountdown] = useState<Countdown | null>(null);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [brandName, setBrandName] = useState("");
   const [guestCount, setGuestCount] = useState(1);
@@ -48,10 +100,10 @@ export default function ContentPage() {
   const toastTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    setCountdownText(formatCountdown());
+    setCountdown(getCountdown());
     const intervalId = window.setInterval(() => {
-      setCountdownText(formatCountdown());
-    }, 60000);
+      setCountdown(getCountdown());
+    }, 1000);
 
     return () => window.clearInterval(intervalId);
   }, []);
@@ -242,6 +294,13 @@ export default function ContentPage() {
     }
   };
 
+  const countdownUnits = [
+    { label: "Hari", value: countdown?.days },
+    { label: "Jam", value: countdown?.hours },
+    { label: "Menit", value: countdown?.minutes },
+    { label: "Detik", value: countdown?.seconds },
+  ];
+
   const statusClassName = [
     styles.statusMessage,
     statusType === "success" ? styles.statusSuccess : "",
@@ -257,10 +316,27 @@ export default function ContentPage() {
       <div className={`${styles.glow} ${styles.glowTwo}`} />
 
       <section className={styles.card}>
+        <span className={`${styles.cardCorner} ${styles.cardCornerTop}`} aria-hidden="true" />
+        <span className={`${styles.cardCorner} ${styles.cardCornerBottom}`} aria-hidden="true" />
+
+        <Link href="/" className={`${styles.backLink} ${styles.reveal} ${styles.delay1}`}>
+          <ArrowLeftIcon />
+          Kembali ke cover
+        </Link>
+
+        <Image
+          src="/beauty-logo.png"
+          alt="Beauty Katamso"
+          width={420}
+          height={105}
+          priority
+          className={`${styles.logo} ${styles.reveal} ${styles.delay1}`}
+        />
+
         <div className={`${styles.tagline} ${styles.reveal} ${styles.delay1}`}>Undangan</div>
 
         <h1 className={`${styles.title} ${styles.reveal} ${styles.delay2}`}>
-          Grand Opening Beauty Raha
+          Grand Opening Beauty Katamso
         </h1>
 
         <p className={`${styles.subtitle} ${styles.reveal} ${styles.delay3}`}>
@@ -270,38 +346,64 @@ export default function ContentPage() {
         <div className={`${styles.divider} ${styles.reveal} ${styles.delay3}`} />
 
         <p className={`${styles.content} ${styles.reveal} ${styles.delay4}`}>
-          Kami mengundang Bapak/Ibu untuk hadir dalam acara <b>Grand Opening Beauty Raha</b>.
+          Kami mengundang Bapak/Ibu untuk hadir dalam acara <b>Grand Opening Beauty Katamso</b>.
           Kehadiran Bapak/Ibu sebagai mitra, sahabat brand, dan tamu undangan merupakan
           dukungan yang sangat berarti bagi langkah awal kami dalam menghadirkan pengalaman
-          kecantikan yang hangat dan elegan di Raha.
+          kecantikan yang hangat dan elegan di Mowila.
         </p>
 
         <div className={`${styles.detailsBox} ${styles.reveal} ${styles.delay5}`}>
           <div className={styles.detailItem}>
+            <span className={styles.detailIcon}>
+              <CalendarIcon />
+            </span>
             <div className={styles.detailLabel}>Tanggal</div>
-            <div className={styles.detailValue}>Jumat, 10 April 2026</div>
+            <div className={styles.detailValue}>Sabtu, 08 Agustus 2026</div>
           </div>
 
           <div className={styles.detailItem}>
+            <span className={styles.detailIcon}>
+              <ClockIcon />
+            </span>
             <div className={styles.detailLabel}>Waktu</div>
-            <div className={styles.detailValue}>Pukul 09.30 WITA - selesai</div>
+            <div className={styles.detailValue}>Pukul 09.00 WITA - selesai</div>
           </div>
         </div>
 
-        <div className={`${styles.locationTitle} ${styles.reveal} ${styles.delay5}`}>Lokasi Acara</div>
-        <div className={`${styles.locationText} ${styles.reveal} ${styles.delay6}`}>
-          Beauty Raha
-          <br />
-          Jl. Sukowati, Raha I, Kec. Katobu, Kabupaten Muna, Sulawesi Tenggara 93611
+        <div className={`${styles.locationCard} ${styles.reveal} ${styles.delay5}`}>
+          <span className={styles.locationIcon}>
+            <PinIcon />
+          </span>
+          <div>
+            <div className={styles.locationTitle}>Lokasi Acara</div>
+            <div className={styles.locationName}>Beauty Katamso</div>
+            <address className={styles.locationText}>
+              Jl. Poros Kendari - Motaha, Mowila, Kab. Konsel
+              <span>Depan BRI Unit Mowila</span>
+            </address>
+          </div>
         </div>
 
-        <div className={`${styles.countdown} ${styles.reveal} ${styles.delay6}`}>
-          Menuju acara: <strong>{countdownText}</strong>
+        <div className={`${styles.countdownCard} ${styles.reveal} ${styles.delay6}`}>
+          <div className={styles.countdownLabel}>
+            {countdown?.isPast ? "Acara telah berlangsung" : "Menuju hari pembukaan"}
+          </div>
+
+          {!countdown?.isPast && (
+            <div className={styles.countdownGrid} aria-label="Hitung mundur menuju acara">
+              {countdownUnits.map((unit) => (
+                <div key={unit.label} className={styles.countdownUnit}>
+                  <strong>{unit.value === undefined ? "--" : pad(unit.value)}</strong>
+                  <small>{unit.label}</small>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className={`${styles.buttonGroup} ${styles.reveal} ${styles.delay7}`}>
           <a
-            href="https://maps.app.goo.gl/w8fharKwpTqkxunV7"
+            href="https://www.google.com/maps/search/?api=1&query=BRI%20Unit%20Mowila%2C%20Jl.%20Poros%20Kendari%20-%20Motaha%2C%20Mowila%2C%20Konawe%20Selatan"
             target="_blank"
             rel="noreferrer"
             className={`${styles.button} ${styles.buttonOutline}`}
@@ -425,11 +527,11 @@ export default function ContentPage() {
         </div>
 
         <p className={`${styles.footerText} ${styles.reveal} ${styles.delay7}`}>
-          Sampai jumpa di Beauty Raha, kami tunggu kehadirannya 💗
+          Sampai jumpa di Beauty Katamso, kami tunggu kehadirannya 💗
         </p>
 
         <div className={`${styles.copyright} ${styles.reveal} ${styles.delay7}`}>
-          &copy; 2026 Beauty Raha - Marketing Communication. All rights reserved.
+          &copy; 2026 Beauty Katamso - Marketing Communication. All rights reserved.
         </div>
       </section>
 
