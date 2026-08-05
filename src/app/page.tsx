@@ -160,8 +160,8 @@ export default function HomePage() {
                 <div className={styles.eventItem}>
                   <CalendarIcon />
                   <span>
-                    <small>Sabtu</small>
-                    08 Agustus 2026
+                    <small>Jumat</small>
+                    07 Agustus 2026
                   </span>
                 </div>
                 <span className={styles.detailDivider} aria-hidden="true" />

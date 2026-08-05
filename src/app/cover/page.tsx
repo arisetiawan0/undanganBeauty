@@ -19,7 +19,7 @@ export default function CoverPage() {
         </div>
 
         <h1 className={styles.title}>Grand Opening Beauty Katamso</h1>
-        <p className={styles.subtitle}>Undangan • 08 Agustus 2026 • 09.00 WITA</p>
+        <p className={styles.subtitle}>Undangan • 07 Agustus 2026 • 09.00 WITA</p>
 
         <Link href="/content" className={styles.button}>
           Buka Undangan

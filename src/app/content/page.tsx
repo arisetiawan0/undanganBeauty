@@ -8,7 +8,7 @@ import styles from "./page.module.css";
 
 const RSVP_SUBMIT_FLAG = "beauty-raha-rsvp-submitted";
 const RSVP_SUBMITTED_BRAND_KEY = "beauty-raha-rsvp-submitted-brand";
-const EVENT_DATE = "2026-08-08T09:00:00+08:00";
+const EVENT_DATE = "2026-08-07T09:00:00+08:00";
 
 type StatusType = "success" | "error" | "info" | "";
 
@@ -358,7 +358,7 @@ export default function ContentPage() {
               <CalendarIcon />
             </span>
             <div className={styles.detailLabel}>Tanggal</div>
-            <div className={styles.detailValue}>Sabtu, 08 Agustus 2026</div>
+            <div className={styles.detailValue}>Jumat, 07 Agustus 2026</div>
           </div>
 
           <div className={styles.detailItem}>
